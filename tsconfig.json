@@ -19,7 +19,12 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@members-components/*": ["./src/components/members/*"],
+      "@constants/*": ["./src/constants/*"],
+      "@constants": ["./src/constants/index.ts"],
+      "@my-types/*": ["./src/types/*"],
+      "@assets/*": ["./src/assets/*"]
     }
   },
   "include": [
