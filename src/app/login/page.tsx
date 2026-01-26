@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import LoginForms from './loginForms';
-import RegisterForms from './registerForms';
 
 export default function SignAuth() {
     const searchParams = useSearchParams();
@@ -24,7 +22,7 @@ export default function SignAuth() {
             >ir para tela de {screen === 'login' ? 'Cadastro' : 'Login'}
             </button>
 
-            {screen === 'login' ? <LoginForms /> : <RegisterForms />}
+            {screen === 'login' ? '<LoginForms />' : '<RegisterForms />'}
         </div>
     );
 }

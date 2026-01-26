@@ -21,6 +21,7 @@
     "paths": {
       "@/*": ["./*"],
       "@members-components/*": ["./src/components/members/*"],
+      "@admins-components/*": ["./src/components/admin/*"],
       "@constants/*": ["./src/constants/*"],
       "@constants": ["./src/constants/index.ts"],
       "@my-types/*": ["./src/types/*"],

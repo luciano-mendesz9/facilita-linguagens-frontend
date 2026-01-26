@@ -3,3 +3,19 @@
 * {
   font-family: var(--font-poppins), Arial, Helvetica, sans-serif;
 }
+
+#nprogress .bar {
+  height: 4px !important;
+  background: linear-gradient(
+    to right,
+    rgb(6, 51, 134),
+    rgb(7, 75, 200),
+    #006aff
+  ) !important;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px #29d, 0 0 5px #29d;
+}
+
+
