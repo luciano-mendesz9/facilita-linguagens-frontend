@@ -94,12 +94,12 @@ export default function SignAuth() {
                 <button
                     onClick={() => alert('Recurso indisponível!')}
                     className='border-2 border-gray-400 rounded-[10px] w-full p-2.5 pl-4 text-gray-500 font-medium mt-3 hover:bg-gray-100 cursor-pointer'>
-                        <Image 
+                    <Image
                         className='absolute'
-                            src={GoogleLogo}
-                            height={25}
-                            alt='Logotipo Google'
-                        />
+                        src={GoogleLogo}
+                        height={25}
+                        alt='Logotipo Google'
+                    />
                     Entrar com o Google
                 </button>
             </div>

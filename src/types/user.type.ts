@@ -3,10 +3,13 @@ type UserType = {
     email: string;
     firstName: string;
     lastName: string;
-    isCollaborator: boolean;
+    image: string;
     status: 'ACTIVE' | 'INACTIVE' | 'PENDING' | 'BLOCKED';
-    createAt: string;
-    image: string | null;
+    role: 'USUARIO' | 'PROFESSOR' | 'DESENVOLVEDOR';
+    createdAt: string;
+    updatedAt: string;
+    isSuperAdmin: boolean;
+    isCollaborator: boolean
 }
 
 export default UserType;

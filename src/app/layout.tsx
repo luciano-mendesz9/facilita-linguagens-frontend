@@ -3,7 +3,8 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/src/contexts/AuthContexts";
 import RouteProgress from "../components/members/preloader";
-//import { AppProgressBar } from "next-nprogress-bar";
+import { ScreenProvider } from "../contexts/ScreenContexts";
+import { getUser } from "../functions";
 
 const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700", "800", "900"],
@@ -16,26 +17,20 @@ export const metadata: Metadata = {
   description: "Plataforma de estimulo gameficado para leitura",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default async function RootLayout({ children, }: Readonly<{ children: React.ReactNode; }>) {
+
+  const user = await getUser();
+
   return (
     <html lang="pt-br" className="h-screen w-screen">
       <body
         className={`${poppins.variable} antialiased h-full w-full bg-white`}
       >
-         {/* <AppProgressBar
-          height="3px"
-          color="#29D"
-          options={{ showSpinner: false }}
-          shallowRouting
-        /> */}
         <RouteProgress />
-        <AuthProvider>
+        <ScreenProvider>
           {children}
-        </AuthProvider>
+        </ScreenProvider>
+        
       </body>
     </html>
   );

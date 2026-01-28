@@ -9,6 +9,7 @@ export default function Dashboard() {
     return (
         <div>
             <TitlePageMember text={"Dashboard"} />
+            Bem-vindo(a), {user?.firstName}
         </div>
     )
 }

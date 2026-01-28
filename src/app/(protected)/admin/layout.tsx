@@ -1,28 +1,9 @@
 'use client';
 
-import { useAuth } from "@/src/contexts/AuthContexts";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-
 import TopbarAdmin from "@admins-components/topbar";
 import SidebarAdmin from "@admins-components/sidebar";
 
 export default function LayoutAdmin({ children }: { children: React.ReactNode }) {
-
-    const { user } = useAuth();
-    const router = useRouter();
-    const [isLoading, setIsLoading] = useState(/*true*/false);
-
-    // useEffect(() => {
-    //     if (!user || !user.isCollaborator) {
-    //         return router.replace('/not-found')
-    //     }
-
-    //     setIsLoading(false);
-
-    // }, [user, router])
-
-    if (isLoading) return
 
     return (
         <div className="relative h-full p-8">
