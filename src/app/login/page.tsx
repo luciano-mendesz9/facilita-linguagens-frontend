@@ -16,6 +16,8 @@ export default function SignAuth() {
     const [screen, setScreen] = useState<'login' | 'register'>('login');
     const [headerContent, setHeaderContent] = useState<{ title: string, description: string } | null>(null);
 
+    const [googleTitleBttn, setGoogleTitleBttn] = useState('Entrar com o Google'); 
+
     useEffect(() => {
         const register = searchParams.get('register');
         setScreen(register === 'true' ? 'register' : 'login');
@@ -92,7 +94,10 @@ export default function SignAuth() {
                 </div>
 
                 <button
-                    onClick={() => alert('Recurso indisponível!')}
+                    onClick={() =>{ 
+                        setGoogleTitleBttn('Aguarde...');
+                        window.location.href = '/api/auth/google'
+                    }}
                     className='border-2 border-gray-400 rounded-[10px] w-full p-2.5 pl-4 text-gray-500 font-medium mt-3 hover:bg-gray-100 cursor-pointer'>
                     <Image
                         className='absolute'
@@ -100,7 +105,7 @@ export default function SignAuth() {
                         height={25}
                         alt='Logotipo Google'
                     />
-                    Entrar com o Google
+                    {googleTitleBttn}
                 </button>
             </div>
 
