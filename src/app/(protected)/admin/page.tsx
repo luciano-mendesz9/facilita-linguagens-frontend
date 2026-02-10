@@ -1,4 +1,6 @@
+import ActivityLogsAdmin from "@/src/components/admin/activity-logs";
 import InfoBoxesAdmin from "@/src/components/admin/info-boxes";
+import Button from "@/src/components/members/button";
 import HeaderTitleAdmin from "@admins-components/header-title";
 import WhiteBoxAdmin from "@admins-components/white-box";
 import PopUp from "@members-components/pop-up";
@@ -7,34 +9,59 @@ export default function DashboardAdmin() {
     return (
         <div>
 
-            <HeaderTitleAdmin
-                title="Título da Página"
-                desc="Usa esse componente quando precisar criar uma nova página que tenha um título e descrição ou só o título."
+            <InfoBoxesAdmin
+                data={[
+                    { data: '3.324', desc: 'Usuários ativos nos últimos 7 dias' },
+
+                    {
+                        data: '294',
+                        desc: (
+                            <>
+                                Textos Anexados.{' '}
+                                <a
+                                    href="/admin/texts"
+                                    className="font-semibold underline hover:text-blue-300"
+                                >
+                                    VER TEXTOS
+                                </a>
+                            </>
+                        ),
+                    },
+
+                    {
+                        data: 'R$ 20.784',
+                        desc: (
+                            <p className="text-center">
+                                Em assinaturas nos últimos 7 dias{' '} <br />
+                                <a
+                                    href="/admin/historics"
+                                    className="font-semibold underline hover:text-blue-300"
+                                >
+                                    VER HISTÓRICO
+                                </a>
+                            </p>
+                        ),
+                        isShow: true,
+                        showButtonEye: true,
+                    },
+                ]}
             />
 
-            <InfoBoxesAdmin
-                data={
-                    [
-                        // esse é o componente que adiciona na tela os quadrinhos azuis. Essas são as quatro formas de usá-los
-                        { data: 'Valor1', desc: 'Descrição1' },
-                        { data: 'Valor2', desc: 'Descrição2', isShow: false, showButtonEye: false },
-                        { data: 'Valor3', desc: 'Descrição3', isShow: false, showButtonEye: true },
-                        { data: 'Valor4', desc: 'Descrição4', isShow: true, showButtonEye: true },
-                    ]
-                }
-            />
 
             <br />
-                
+
             <WhiteBoxAdmin>
-                <h1>RECADO: QUANDO TU PRECISAR USAR ESSES QUADROS BRANCOS FLUTUANTE, USA O COMPONENTE {'<WhiteBoxAdmin> conteúdo </WhiteBoxAdmin>'}</h1>
+                <div className="flex items-center justify-between">
+                    <div className="flex flex-col">
+                        <span className="font-semibold text-blue-500">ASSINATIURA DE INSTITUIÇÕES</span>
+                        <span className="text-gray-700 font-medium">Há 0 Instituições cadastradas no sistema</span>
+                    </div>
+                    <Button title="gerenciar instituições" />
+                </div>
             </WhiteBoxAdmin>
-
-            <PopUp>
-                <h1 className="text-2xl font-semibold">Mensagem</h1>
-                <span>Apaga esse componente Pop-up no código para sumir com esse quadro.</span>
-            </PopUp>
-
+            <br />
+            <ActivityLogsAdmin />
+            <br /><br /><br /><br /><br />
         </div>
     )
 }
