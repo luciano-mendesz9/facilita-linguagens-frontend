@@ -1,7 +1,6 @@
-'use client';
-
 import TopbarAdmin from "@admins-components/topbar";
 import SidebarAdmin from "@admins-components/sidebar";
+import { DatabaseProvider } from "@/src/contexts/DatabaseContext";
 
 export default function LayoutAdmin({ children }: { children: React.ReactNode }) {
 
@@ -18,7 +17,9 @@ export default function LayoutAdmin({ children }: { children: React.ReactNode })
                 <SidebarAdmin />
 
                 <div className="w-full h-full overflow-auto hide-scrollbar">
-                    {children}
+                    <DatabaseProvider>
+                        {children}
+                    </DatabaseProvider>
                 </div>
             </div>
 

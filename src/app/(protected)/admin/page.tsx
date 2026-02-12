@@ -1,9 +1,8 @@
 import ActivityLogsAdmin from "@/src/components/admin/activity-logs";
 import InfoBoxesAdmin from "@/src/components/admin/info-boxes";
 import Button from "@/src/components/members/button";
-import HeaderTitleAdmin from "@admins-components/header-title";
+import { useDatabase } from "@/src/contexts/DatabaseContext";
 import WhiteBoxAdmin from "@admins-components/white-box";
-import PopUp from "@members-components/pop-up";
 
 export default function DashboardAdmin() {
     return (
@@ -17,7 +16,7 @@ export default function DashboardAdmin() {
                         data: '294',
                         desc: (
                             <>
-                                Textos Anexados.{' '}
+                                Textos Anexados.{' '} 
                                 <a
                                     href="/admin/texts"
                                     className="font-semibold underline hover:text-blue-300"

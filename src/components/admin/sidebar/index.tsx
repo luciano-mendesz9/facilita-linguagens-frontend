@@ -6,7 +6,7 @@ import { LayoutDashboardIcon, PaperclipIcon, UserCogIcon } from "lucide-react";
 const routes = [
     { name: 'Dashboard', path: '/admin', icon: LayoutDashboardIcon },
     { name: 'Anexos', path: '/admin/texts', icon: PaperclipIcon },
-    { name: 'Colaboradores', path: '/admin/collab', icon: UserCogIcon },
+    { name: 'Colaboradores', path: '/admin/collaborators', icon: UserCogIcon },
 ]
 
 export default function SidebarAdmin() {
@@ -14,7 +14,7 @@ export default function SidebarAdmin() {
     const router = useRouter();
 
     return (
-        <div className="bg-white w-50 h-[85%] p-4 rounded-2xl sticky top-20 shadow-[0_0_20px_-5px_rgba(0,0,0,0.25)] flex flex-col items-start gap-3">
+        <div className="bg-white w-50 h-[85%] p-4 rounded-2xl sticky top-20 shadow-[0_0_20px_-5px_rgba(0,0,0,0.25)] flex flex-col items-start gap-3 overflow-y-auto">
             {routes.map((route, index) => {
                 const isActive = pathname === route.path
 

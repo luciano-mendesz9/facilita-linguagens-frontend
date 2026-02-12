@@ -2,6 +2,7 @@ import Image from "next/image";
 import WhiteBoxAdmin from "../white-box";
 
 import ProfileImage from '@assets/profile.png';
+import { MONTHS } from "@/src/constants";
 
 const data = [
     {
@@ -89,6 +90,9 @@ export default function ActivityLogsAdmin() {
                 <div className="flex items-center gap-2">
                     <select name="months" id="months" className="w-80 p-3 rounded-lg border border-gray-400" >
                         <option value="all">Todos os Meses</option>
+                        {MONTHS.map((month, index) => (
+                            <option key={index} value={month.toLowerCase()}>{month}</option>
+                        ))}
                     </select>
                     <select name="admins" id="admins" className="w-80 p-3 rounded-lg border border-gray-400" >
                         <option value="all">Todos os Admins</option>
