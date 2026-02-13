@@ -17,3 +17,7 @@ export const MONTHS = [
     'Novembro',
     'Dezembro',
 ]
+
+export const USER_PERMISSIONS = [
+    'CREATE_ADMIN', 'UPDATE_ADMIN', 'DELETE_ADMIN', 'CREATE_TEXT', 'UPDATE_TEXT', 'DELETE_TEXT', 'CREATE_GENRE', 'UPDATE_GENRE', 'DELETE_GENRE'
+];

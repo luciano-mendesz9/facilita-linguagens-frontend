@@ -55,13 +55,40 @@ export const getCollaborators = async ({ id }: { id?: string }) => {
 
         const data = await res.json();
 
-        console.log(data)
-
         if (id) {
             return [data as UserType];
         }
 
         return data as UserType[];
+    } catch (error) {
+        console.log(error)
+        return null
+    }
+}
+
+
+export const getUserByEmail = async ({ email }: { email: string }) => {
+    try {
+
+        const token = await getCookieToken();
+        if (!token) return null;
+
+        const res = await fetch(`${URL_SERVER}/users?email=${email}`, {
+            method: 'GET',
+            cache: 'no-store',
+            headers: {
+                Cookie: `auth_token=${token}`
+            },
+            credentials: 'include'
+        });
+
+        if (!res.ok) {
+            throw new Error('fetch user by email error')
+        }
+
+        const data = await res.json();
+
+        return data as UserType;
     } catch (error) {
         console.log(error)
         return null

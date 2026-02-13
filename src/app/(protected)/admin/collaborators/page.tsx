@@ -4,11 +4,14 @@ import BoxCollaboratorsAdmin from "@/src/components/admin/box-collaborators";
 import InfoBoxesAdmin from "@/src/components/admin/info-boxes";
 import Button from "@/src/components/members/button";
 import PopUp from "@/src/components/members/pop-up";
+import AdminAddCollaboratorPopup from "@/src/components/pop-ups/admin-add-collaborator";
 import { useDatabase } from "@/src/contexts/DatabaseContext";
 import HeaderTitleAdmin from "@admins-components/header-title";
+import { useState } from "react";
 
 export default function CollaboratorsPage() {
     const { collaborators } = useDatabase();
+    const [addCollaboratorPopuOn, setAddCollaboratorPopuOn] = useState(false);
     return (
         <div>
             <div className="flex items-center justify-between">
@@ -17,7 +20,11 @@ export default function CollaboratorsPage() {
                     desc="Gerencie permissões, atribua funções e acompanhe status de convites da equipe administrativa."
                 />
 
-                <Button title="+ adicionar colaborador" bgColor="bg-green-600" />
+                <Button
+                    title="+ adicionar colaborador"
+                    bgColor="bg-green-600"
+                    action={() => setAddCollaboratorPopuOn(true)}
+                />
 
             </div>
             <br />
@@ -31,12 +38,7 @@ export default function CollaboratorsPage() {
                 }
             />
 
-            <PopUp actionClose={() => alert('clicou')} header={{
-                title: 'Teste', desc: 'testados'
-            }}>
-                oi
-            </PopUp>
-
+            {addCollaboratorPopuOn && <AdminAddCollaboratorPopup closeAction={() => setAddCollaboratorPopuOn(false)} />}
 
             <br />
             <br />
