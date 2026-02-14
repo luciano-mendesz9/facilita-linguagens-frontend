@@ -4,7 +4,7 @@ import BoxCollaboratorsAdmin from "@/src/components/admin/box-collaborators";
 import InfoBoxesAdmin from "@/src/components/admin/info-boxes";
 import Button from "@/src/components/members/button";
 import PopUp from "@/src/components/members/pop-up";
-import AdminAddCollaboratorPopup from "@/src/components/pop-ups/admin-add-collaborator";
+import AdminAddCollaboratorPopup from "@/src/components/pop-ups/admin-add-collaborator/index";
 import { useDatabase } from "@/src/contexts/DatabaseContext";
 import HeaderTitleAdmin from "@admins-components/header-title";
 import { useState } from "react";

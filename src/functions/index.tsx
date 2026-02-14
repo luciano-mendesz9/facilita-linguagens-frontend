@@ -83,6 +83,7 @@ export const getUserByEmail = async ({ email }: { email: string }) => {
         });
 
         if (!res.ok) {
+            console.log(await res.text());
             throw new Error('fetch user by email error')
         }
 

@@ -1,8 +1,9 @@
 import Image from "next/image";
 import { PLATFORM_NAME } from "@/src/constants";
-import { LogOutIcon, SearchIcon } from "lucide-react";
+import { SearchIcon } from "lucide-react";
 
 import ProfileImage from '@assets/profile.png';
+import LogoutButton from "./logout";
 
 export default function TopbarAdmin() {
     return (
@@ -27,9 +28,7 @@ export default function TopbarAdmin() {
                     className="rounded-full border-3 border-white"
                 />
 
-                <button className="cursor-pointer hover:text-yellow-300 text-white">
-                    <LogOutIcon size={36} />
-                </button>
+                <LogoutButton />
             </div>
         </div>
     )
