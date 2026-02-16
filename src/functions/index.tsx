@@ -33,6 +33,11 @@ export const getCookieToken = async () => {
     return token || null;
 }
 
+export const deleteCookieToken = async () => {
+    const cookie = await cookies();
+    cookie.delete('auth_token');
+}
+
 
 export const getCollaborators = async ({ id }: { id?: string }) => {
     try {

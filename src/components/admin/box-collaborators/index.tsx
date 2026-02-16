@@ -19,7 +19,7 @@ function ActionRow({ admin }: { admin: UserType }) {
 
     return (
         <div className="flex items-center justify-between pt-3 pb-3 border-b pl-3 pr-3 border-b-gray-400">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-1">
                 <Image
                     src={ProfileImage}
                     alt="Imagem de perfil"
@@ -32,7 +32,7 @@ function ActionRow({ admin }: { admin: UserType }) {
                 </div>
             </div>
             <StatusBadge title={admin.status} type={status} />
-            <span className="text-gray-900"><a href="#" className="underline">Acessar Histórico de Atividade</a></span>
+            <span className="text-gray-900 flex flex-1 justify-center">{admin.status === 'PENDING' ? <span>-</span> : <a href="#" className="underline">Acessar Histórico de Atividade</a>}</span>
             {user?.isSuperAdmin && (
                 <button className="cursor-pointer">
                     <SettingsIcon color="white" size={36} className="bg-blue-500 p-1 rounded-md hover:bg-blue-700" />

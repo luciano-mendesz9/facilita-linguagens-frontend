@@ -5,15 +5,20 @@ import { getUserByEmail } from "@/src/functions";
 import Image from "next/image";
 import Profile from '@assets/profile.png';
 import { SearchIcon, TrashIcon } from "lucide-react";
+import Button from "../../members/button";
+import PermissionComponents from "./permissions-component";
+import { sendAdminLinkRequest } from "./actions";
+import { useRouter } from "next/navigation";
 
 export default function FormsSearchAccount() {
-    const [isSuperAdmin, setIsSuperAdmin] = useState(false);
-    const [selectedPermissions, setSelectedPermissions] = useState<Set<string>>(new Set());
+    const [isLoading, setIsLoading] = useState(false);
 
     const [emailSearch, setEmailSearch] = useState('');
     const [searching, setSearching] = useState(false);
     const [userFound, setUserFound] = useState<UserType | null>(null);
     const [notFound, setNotFound] = useState(false);
+
+    const router = useRouter();
 
     async function handleSearchUser() {
 
@@ -54,13 +59,39 @@ export default function FormsSearchAccount() {
         return null;
     }
 
+    async function addCollaborator() {
+
+        if (!userFound) return;
+        setIsLoading(true);
+        const res = await sendAdminLinkRequest({
+            data: {
+                email: userFound.email,
+                isCreateAccount: false,
+                config: {
+                    permissions: [],
+                    isSuperAdmin: true,
+                    role: 'DESENVOLVEDOR'
+                }
+            }
+        })
+
+        setIsLoading(false)
+        if (!res) {
+            return alert('Ocorreu um erro inesperado! Se o erro persistir, solicite ajuda dos desenvolvedores.')
+        }
+
+        router.refresh();
+
+    }
+
     return (
         <div className="w-[60%] m-auto mt-5">
 
             <p className="text-[14px] text-center mt-7 text-gray-700 mb-10">
                 <strong>ATENÇÃO: </strong>
                 O colaborador precisa já possuir uma conta cadastrada na plataforma
-                para ser adicionado à equipe administrativa.
+                para ser adicionado à equipe administrativa. Ele/a receberá um e-mail informando
+                esta ação.
             </p>
 
             <div className="flex items-center gap-2">
@@ -140,6 +171,18 @@ export default function FormsSearchAccount() {
                         )}
                     </div>
 
+                </div>
+            )}
+
+            {userFound && !userFound.isCollaborator && (
+                <div className="w-full mt-3">
+                    <PermissionComponents />
+                    <Button
+                        disabled={isLoading}
+                        styles="w-full mt-5"
+                        action={addCollaborator}
+                        title={isLoading ? 'Vinculando Conta...' : "Vincular Conta aos Colaboradores"}
+                    />
                 </div>
             )}
 

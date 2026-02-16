@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { deleteCookieToken, getUser } from './functions'
 
 type TokenPayload = {
   publicId: string
@@ -19,7 +20,7 @@ function decodeToken(token: string): TokenPayload | null {
   }
 }
 
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
   const token = request.cookies.get('auth_token')?.value
 
@@ -59,6 +60,13 @@ export function proxy(request: NextRequest) {
 
   if (isAdminRoute) {
     if (!payload.isSuperAdmin && !payload.isCollaborator) {
+      return redirect('/not-found')
+    }
+
+    const user = await getUser();
+
+    if (!user || !user.isCollaborator) {
+      deleteCookieToken();
       return redirect('/not-found')
     }
   }
