@@ -38,6 +38,24 @@ export const deleteCookieToken = async () => {
     cookie.delete('auth_token');
 }
 
+export const logout = async () => {
+    const token = await getCookieToken();
+    if (!token) return null;
+
+    const res = await fetch(`${URL_SERVER}/auth/logout`, {
+        method: 'POST',
+        cache: 'no-store',
+        headers: {
+            'Content-Type': 'application/json',
+            Cookie: `auth_token=${token}`
+        },
+        credentials: 'include'
+    });
+
+
+    return res.ok;
+}
+
 
 export const getCollaborators = async ({ id }: { id?: string }) => {
     try {

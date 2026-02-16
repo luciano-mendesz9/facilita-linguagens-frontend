@@ -1,12 +1,13 @@
 'use client'
 
 import { usePathname, useRouter } from 'next/navigation';
-import { LayoutDashboardIcon, PaperclipIcon, UserCogIcon } from "lucide-react";
+import { LayoutDashboardIcon, PaperclipIcon, SquareDashedMousePointerIcon, UserCogIcon } from "lucide-react";
 
 const routes = [
     { name: 'Dashboard', path: '/admin', icon: LayoutDashboardIcon },
-    { name: 'Anexos', path: '/admin/texts', icon: PaperclipIcon },
+    { name: 'Anexos', path: '/admin/attachments', icon: PaperclipIcon },
     { name: 'Colaboradores', path: '/admin/collaborators', icon: UserCogIcon },
+    { name: 'Acessar Plataforma', path: '/dashboard', icon: SquareDashedMousePointerIcon },
 ]
 
 export default function SidebarAdmin() {

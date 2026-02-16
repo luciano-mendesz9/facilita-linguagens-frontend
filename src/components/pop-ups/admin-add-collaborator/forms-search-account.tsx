@@ -65,8 +65,12 @@ export default function FormsSearchAccount() {
         setIsLoading(true);
         const res = await sendAdminLinkRequest({
             data: {
-                email: userFound.email,
                 isCreateAccount: false,
+                user: {
+                    email: userFound.email,
+                    firstName: userFound.firstName,
+                    lastName: userFound.lastName
+                },
                 config: {
                     permissions: [],
                     isSuperAdmin: true,

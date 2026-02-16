@@ -7,6 +7,8 @@ import { sendAdminLinkRequest } from "./actions";
 import Button from "../../members/button";
 
 export default function FormsCreateAccount() {
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -14,6 +16,7 @@ export default function FormsCreateAccount() {
     const [isLoading, setIsLoading] = useState(false);
     const [generating, setGenerating] = useState(false);
     const [selectedPermissions, setSelectedPermissions] = useState<Set<string>>(new Set());
+    const [fetchSuccess, setFetchSuccess] = useState(false);
 
     useEffect(() => generatePassword(), []);
 
@@ -41,15 +44,22 @@ export default function FormsCreateAccount() {
 
     async function addCollaborator() {
 
-        if(!email) return alert('Preencha o email');
-        if(!email.includes('.com') || !email.includes('@')) return alert('Preencha o e-mail válido')
+        if (!firstName) return alert('Preencha o Nome');
+        if (!lastName) return alert('Preencha o Sobrenome');
+
+        if (!email) return alert('Preencha o e-mail');
+        if (!email.includes('.com') || !email.includes('@')) return alert('Preencha um e-mail válido')
 
         setIsLoading(true);
         const res = await sendAdminLinkRequest({
             data: {
-                email: email,
                 isCreateAccount: true,
-                password,
+                user: {
+                    email,
+                    password,
+                    firstName,
+                    lastName,
+                },
                 config: {
                     isSuperAdmin: true,
                     permissions: [],
@@ -63,8 +73,28 @@ export default function FormsCreateAccount() {
             return alert('Ocorreu um erro inesperado! Se o erro persistir, solicite ajuda dos desenvolvedores.')
         }
 
-        /// router.refresh();
+        setFetchSuccess(true);
+        setEmail('');
+        setFirstName('');
+        setLastName('');
+        setPassword('');
 
+    }
+
+    if (fetchSuccess) {
+        return (
+            <div className="w-[60%] m-auto mt-5">
+                <p className="text-[18px] text-center mt-7 text-gray-700 mb-10">
+                    <strong>Adicionado com Sucesso! ✅</strong>
+                    O <i>Status</i> da conta do colaborador foi ajustada como <span className="text-yellow-600 font-medium">PENDENDTE</span>,
+                    por isso, ele/a recebeu uma notificação no e-mail informado para acessar sua conta. <br /><br /> <strong className="text-red-800">⚠️ ATENÇÃO: </strong>
+                    A senha de acesso foi informada no e-mail enviado, instrua-o a trocá-la nas configurações com <span className="font-semibold">URGÊNCIA</span> após o login!
+                    <br /> <br />
+                    <span className="text-[14px]">Se o colaborador não aparecer na lista, atualize a página 😉</span>
+                </p>
+                <Button title="Cadastrar Novo Colaborador" styles="w-full" action={() => setFetchSuccess(false)} />
+            </div>
+        )
     }
 
     return (
@@ -76,12 +106,29 @@ export default function FormsCreateAccount() {
                 alertando o vínculo e recebendo a senha de acesso. Ao fazer login, ele/a poderá
                 trocar a senha aleatória de acesso, criada neste momento, nas configurações.
             </p>
-            <input
-                type="email"
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="E-mail do usuário"
-                className="outline-blue-500 w-full p-3 border-2 border-gray-400 rounded-md"
-            />
+            <div className="flex flex-col gap-2">
+                <input
+                    disabled={isLoading}
+                    type="email"
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="E-mail do usuário"
+                    className="outline-blue-500 w-full p-3 border-2 border-gray-400 rounded-md"
+                />
+                <input
+                    disabled={isLoading}
+                    type="text"
+                    onChange={(e) => setFirstName(e.target.value)}
+                    placeholder="Nome do usuário. Ex: João"
+                    className="outline-blue-500 w-full p-3 border-2 border-gray-400 rounded-md"
+                />
+                <input
+                    disabled={isLoading}
+                    type="text"
+                    onChange={(e) => setLastName(e.target.value)}
+                    placeholder="Sobrenome do usuário. Ex: da Silva"
+                    className="outline-blue-500 w-full p-3 border-2 border-gray-400 rounded-md"
+                />
+            </div>
 
             {/* PASSWORD */}
             <div className="flex justify-between items-center mt-6">

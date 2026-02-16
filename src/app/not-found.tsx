@@ -1,7 +1,11 @@
-import Link from 'next/link'
+'use client'
 import { PLATFORM_NAME } from '../constants'
+import { useRouter } from 'next/navigation'
 
 export default function NotFound() {
+
+  const router = useRouter();
+
   return (
     <div className="min-h-screen flex items-center justify-center  from-blue-50 to-blue-100 px-6">
       <div className="max-w-md w-full text-center bg-white rounded-2xl shadow-xl p-10">
@@ -24,12 +28,12 @@ export default function NotFound() {
         <div className="h-px w-full bg-blue-100 mb-6" />
 
         {/* CTA */}
-        <Link
-          href="/"
+        <button
+          onClick={() => router.back()}
           className="inline-flex items-center justify-center rounded-lg bg-blue-400 px-6 py-3 text-white font-medium transition hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300"
         >
-          Voltar para o início
-        </Link>
+          Voltar para tela anterior
+        </button>
 
         {/* Footer */}
         <p className="mt-8 text-sm text-gray-400">

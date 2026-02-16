@@ -6,12 +6,17 @@ import { getCookieToken } from "@/src/functions";
 type Props = {
     data: {
         isCreateAccount: boolean;
-        email: string;
-        password?: string;
+        user: {
+            email: string;
+            firstName: string;
+            lastName: string;
+            password?: string;
+
+        };
         config: {
             isSuperAdmin: boolean,
             permissions: string[],
-            role: 'PROFESSOR'| 'DESENVOLVEDOR' | 'USUARIO'
+            role: 'PROFESSOR' | 'DESENVOLVEDOR' | 'USUARIO'
         }
     }
 }

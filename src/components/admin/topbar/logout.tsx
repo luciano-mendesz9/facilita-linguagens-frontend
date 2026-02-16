@@ -1,31 +1,30 @@
-'use client';
-
-import { LogOutIcon } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-
-export function useLogout() {
-
-    const router = useRouter();
-
-    function logout() {
-
-        document.cookie = `
-            auth_token=;
-            path=/;
-            expires=Thu, 01 Jan 1970 00:00:00 GMT;
-        `;
-
-        router.replace('/login');
-        router.refresh();
-    }
-
-    return logout;
-}
+import { LogOutIcon } from "lucide-react";
+//import { useRouter } from "next/navigation";
 
 export default function LogoutButton() {
-    const logout = useLogout();
+    //const router = useRouter();
+    const handleLogout = async () => {
+
+        // if (!confirm('Tem certeza que deseja sair da sua conta?')) return;
+
+        // const res = await fetch(`${URL_SERVER}/auth/logout`, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     credentials: 'include'
+        // });
+
+        // if (!res.ok) {
+        //     alert('Algo deu errado ao efetuar o logout.')
+        // }
+
+        //router.replace('/');
+
+    }
+
     return (
-        <button onClick={logout} className="cursor-pointer hover:text-yellow-300 text-white">
+        <button className="cursor-pointer hover:text-yellow-300 text-white">
             <LogOutIcon size={36} />
         </button>
     )
