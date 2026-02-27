@@ -52,8 +52,6 @@ export async function loginAction(_: LoginState, formData: FormData): Promise<Lo
             body: JSON.stringify(parsed.data)
         });
 
-        console.log(response);
-
         if (response.status === 500) throw new Error('Internal Server Error - Login');
 
         if (!response.ok) {

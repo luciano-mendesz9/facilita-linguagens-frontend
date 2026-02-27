@@ -114,11 +114,12 @@ export default function FormsSearchAccount() {
                         type="button"
                         onClick={handleSearchUser}
                         disabled={!emailSearch || !emailSearch.includes('@') || !emailSearch.includes('.com') || searching}
+                        style={{cursor: !emailSearch || !emailSearch.includes('@') || !emailSearch.includes('.com') || searching ? 'no-drop' : 'pointer'}}
                         className={`
                         flex items-center gap-2 px-4 py-3 rounded-md text-white
                         ${!emailSearch || !emailSearch.includes('@') || !emailSearch.includes('.com') || searching
-                                ? 'bg-gray-400 cursor-not-allowed'
-                                : 'bg-blue-500 hover:bg-blue-600 cursor-pointer'}
+                                ? 'bg-gray-400 text-red-400'
+                                : 'bg-blue-500 hover:bg-blue-600'}
                     `}
                     >
                         <SearchIcon size={18} />
