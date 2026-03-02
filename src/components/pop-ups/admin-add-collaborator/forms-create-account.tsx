@@ -6,6 +6,7 @@ import PermissionComponents from "./permissions-component";
 import { sendAdminLinkRequest } from "./actions";
 import Button from "../../members/button";
 import { useDatabase } from "@/src/contexts/DatabaseContext";
+import toast from "react-hot-toast";
 
 export default function FormsCreateAccount() {
     const [firstName, setFirstName] = useState('');
@@ -42,18 +43,19 @@ export default function FormsCreateAccount() {
     async function copyToClipboard() {
         if (!password) return;
         await navigator.clipboard.writeText(password);
-        alert('Senha copiada!')
+        toast.success('Senha copiada!')
     }
 
     async function addCollaborator() {
 
-        if (!firstName) return alert('Preencha o Nome');
-        if (!lastName) return alert('Preencha o Sobrenome');
+        if (!firstName) return toast.error('Preencha o Nome');
+        if (!lastName) return toast.error('Preencha o Sobrenome');
 
-        if (!email) return alert('Preencha o e-mail');
-        if (!email.includes('.com') || !email.includes('@')) return alert('Preencha um e-mail válido')
+        if (!email) return toast.error('Preencha o e-mail');
+        if (!email.includes('.com') || !email.includes('@')) return toast.error('Preencha um e-mail válido')
 
         setIsLoading(true);
+        const toastId = toast.loading("Adicionando colaborador, aguarde...");
         const res = await sendAdminLinkRequest({
             data: {
                 isCreateAccount: true,
@@ -73,13 +75,17 @@ export default function FormsCreateAccount() {
 
         setIsLoading(false)
         if (!res) {
-            return alert('Ocorreu um erro inesperado! Se o erro persistir, solicite ajuda dos desenvolvedores.')
+            return toast.error('Ocorreu um erro inesperado! Se o erro persistir, solicite ajuda técnica.')
         }
 
 
         fetchCollaborators();
         setFetchSuccess(true);
+
+        toast.dismiss(toastId);
+        toast.success('Colaborador adicionado com sucesso!')
         setEmail('');
+
         setFirstName('');
         setLastName('');
         setPassword('');
