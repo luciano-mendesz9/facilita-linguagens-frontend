@@ -7,7 +7,7 @@ import Line from "@/src/components/members/line";
 import StatusBadge from "@/src/components/members/status-badge";
 import AdminAddGenrePopup from "@/src/components/pop-ups/admin-add-genres";
 import { DataGenreType, DataTextType } from "@/src/types/datas.types";
-import { CircleUserIcon, EyeIcon, PencilIcon, TagIcon, Trash2Icon } from "lucide-react";
+import { CircleUserIcon, EyeIcon, ListFilterPlusIcon, PencilIcon, TagIcon, Trash2Icon } from "lucide-react";
 import { memo, useCallback, useMemo, useState } from "react";
 
 type TextViewModel = {
@@ -53,17 +53,21 @@ const TextRow = memo(({ text, checked, onSelect }: TextRowProps) => {
                 {text.createdAt}
             </span>
 
-            <div className="flex flex-1 items-center gap-1">
-                <button className="h-10 rounded-lg bg-orange-400 w-10 cursor-pointer hover:bg-orange-500 flex items-center justify-center">
+            <div className="flex flex-1 items-center gap-1 justify-end">
+                <button className={"h-10 rounded-lg bg-orange-400 w-10 cursor-pointer hover:bg-orange-500 flex items-center justify-center"}>
                     <CircleUserIcon color="white" />
                 </button>
-                <button className="h-10 rounded-lg bg-indigo-600 w-10 cursor-pointer hover:bg-indigo-900 flex items-center justify-center">
-                    <EyeIcon color="white" />
-                </button>
-                <button className="h-10 rounded-lg bg-green-600 w-10 cursor-pointer hover:bg-green-800 flex items-center justify-center">
-                    <PencilIcon color="white" />
-                </button>
-                <button className="h-10 rounded-lg bg-red-400 w-10 cursor-pointer hover:bg-red-700 flex items-center justify-center">
+                {!checked && (
+                    <>
+                        <button className={"h-10 rounded-lg bg-indigo-600 w-10 cursor-pointer hover:bg-indigo-900 flex items-center justify-center"}>
+                            <EyeIcon color="white" />
+                        </button>
+                        <button className={"h-10 rounded-lg bg-green-600 w-10 cursor-pointer hover:bg-green-800 flex items-center justify-center"}>
+                            <PencilIcon color="white" />
+                        </button>
+                    </>
+                )}
+                <button className={"h-10 rounded-lg bg-red-400 w-10 cursor-pointer hover:bg-red-700 flex items-center justify-center"}>
                     <Trash2Icon color="white" />
                 </button>
             </div>
@@ -76,6 +80,7 @@ TextRow.displayName = 'TextRow';
 export default function Attachments() {
 
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+    const [selectAll, setSelectAll] = useState(false)
     const [addGenretorPopuOn, setAddGenretorPopuOn] = useState(false);
     const [genreForEditing, setGenreForEditing] = useState<DataGenreType | null>(null);
 
@@ -128,6 +133,14 @@ export default function Attachments() {
         });
     }, []);
 
+    const handleSelectAll = () => {
+        const ids: Set<string> = new Set();
+        if (!selectAll) {
+            textsView.map((txt) => ids.add(txt.publicId));
+        }
+        setSelectedIds(ids);
+    }
+
     return (
         <div className="overflow-y-auto h-screen">
             <HeaderTitleAdmin
@@ -163,14 +176,28 @@ export default function Attachments() {
                 <div className="flex-5">
                     <WhiteBoxAdmin>
                         <div className="flex items-center justify-between mb-5">
-                            <h2 className="text-[20px] font-semibold">Textos Anexados</h2>
-                            <button
-                                style={{ cursor: selectedIds.size === 0 ? 'no-drop' : 'pointer' }}
-                                className={`flex items-center gap-3 px-5 ${selectedIds.size === 0 ? 'bg-gray-300 text-gray-500' : 'bg-red-400 text-white'} py-2 rounded-md  font-medium`}
-                            >
-                                DELETAR {selectedIds.size.toString()} SELECIONADOS
-                                <Trash2Icon />
-                            </button>
+                            <h2 className="text-[20px] font-semibold">{textsView.length} {textsView.length === 1 ? 'Texto Anexado' : 'Textos Anexados'}</h2>
+                            <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2">
+                                    <input checked={selectAll} onChange={() => {
+                                        setSelectAll(selectAll ? false : true);
+                                        handleSelectAll();
+
+                                    }} type="checkbox" className="cursor-pointer" name="select-all" id="select-all" />
+                                    <label htmlFor="select-all" className="cursor-pointer font-medium hover:text-blue-500">Selecionar Todos</label>
+                                    {selectedIds.size > 0 && <span>[ {selectedIds.size} ]</span>}
+                                </div>
+                                {selectedIds.size > 0 && <button
+                                    style={{ cursor: selectedIds.size === 0 ? 'no-drop' : 'pointer' }}
+                                    className={`flex items-center gap-3 text-[14px] px-5 ${selectedIds.size === 0 ? 'bg-gray-300 text-gray-500' : 'bg-red-400 text-white'} py-2 rounded-md  font-medium`}
+                                >
+                                    DELETAR SELEÇÃO
+                                    <Trash2Icon size={20} />
+                                </button>}
+                                <button onClick={() => alert('Os filtros ainda não estão disponíveis para essa tabela.')} className="hover:text-blue-500 cursor-pointer">
+                                    <ListFilterPlusIcon />
+                                </button>
+                            </div>
                         </div>
 
                         <Line />
@@ -215,12 +242,12 @@ export default function Attachments() {
                             <div className="flex gap-3 flex-col h-80 overflow-y-auto">
                                 {genres.map(genre => (
                                     <button
-                                    key={genre.id}
-                                    className="bg-gray-200 flex justify-between items-center p-2 py-3 rounded-lg hover:bg-gray-400"
-                                    onClick={() => {
-                                        setGenreForEditing(genre);
-                                        setAddGenretorPopuOn(true);
-                                    }}
+                                        key={genre.id}
+                                        className="bg-gray-200 flex justify-between items-center p-2 py-3 rounded-lg hover:bg-gray-400"
+                                        onClick={() => {
+                                            setGenreForEditing(genre);
+                                            setAddGenretorPopuOn(true);
+                                        }}
                                     >
                                         <div className="flex flex-col items-start">
                                             <span className="font-semibold">
