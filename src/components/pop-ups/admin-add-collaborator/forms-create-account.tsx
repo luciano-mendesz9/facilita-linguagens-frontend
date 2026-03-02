@@ -5,6 +5,7 @@ import { USER_PERMISSIONS, USER_ROLES } from "@/src/constants";
 import PermissionComponents from "./permissions-component";
 import { sendAdminLinkRequest } from "./actions";
 import Button from "../../members/button";
+import { useDatabase } from "@/src/contexts/DatabaseContext";
 
 export default function FormsCreateAccount() {
     const [firstName, setFirstName] = useState('');
@@ -17,6 +18,8 @@ export default function FormsCreateAccount() {
     const [generating, setGenerating] = useState(false);
     const [selectedPermissions, setSelectedPermissions] = useState<Set<string>>(new Set());
     const [fetchSuccess, setFetchSuccess] = useState(false);
+
+    const { fetchCollaborators } = useDatabase();
 
     useEffect(() => generatePassword(), []);
 
@@ -73,6 +76,8 @@ export default function FormsCreateAccount() {
             return alert('Ocorreu um erro inesperado! Se o erro persistir, solicite ajuda dos desenvolvedores.')
         }
 
+
+        fetchCollaborators();
         setFetchSuccess(true);
         setEmail('');
         setFirstName('');

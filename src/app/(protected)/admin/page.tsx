@@ -1,7 +1,6 @@
 import ActivityLogsAdmin from "@/src/components/admin/activity-logs";
 import InfoBoxesAdmin from "@/src/components/admin/info-boxes";
 import Button from "@/src/components/members/button";
-import { useDatabase } from "@/src/contexts/DatabaseContext";
 import WhiteBoxAdmin from "@admins-components/white-box";
 
 export default function DashboardAdmin() {

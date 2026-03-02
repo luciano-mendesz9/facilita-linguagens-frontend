@@ -8,7 +8,7 @@ import { SearchIcon, TrashIcon } from "lucide-react";
 import Button from "../../members/button";
 import PermissionComponents from "./permissions-component";
 import { sendAdminLinkRequest } from "./actions";
-import { useRouter } from "next/navigation";
+import { useDatabase } from "@/src/contexts/DatabaseContext";
 
 export default function FormsSearchAccount() {
     const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +18,7 @@ export default function FormsSearchAccount() {
     const [userFound, setUserFound] = useState<UserType | null>(null);
     const [notFound, setNotFound] = useState(false);
 
-    const router = useRouter();
+    const { fetchCollaborators } = useDatabase();
 
     async function handleSearchUser() {
 
@@ -65,7 +65,7 @@ export default function FormsSearchAccount() {
         setIsLoading(true);
         const res = await sendAdminLinkRequest({
             data: {
-                isCreateAccount: false,
+                isCreateAccount: false, 
                 user: {
                     email: userFound.email,
                     firstName: userFound.firstName,
@@ -84,7 +84,7 @@ export default function FormsSearchAccount() {
             return alert('Ocorreu um erro inesperado! Se o erro persistir, solicite ajuda dos desenvolvedores.')
         }
 
-        router.refresh();
+        fetchCollaborators();
 
     }
 
@@ -114,7 +114,7 @@ export default function FormsSearchAccount() {
                         type="button"
                         onClick={handleSearchUser}
                         disabled={!emailSearch || !emailSearch.includes('@') || !emailSearch.includes('.com') || searching}
-                        style={{cursor: !emailSearch || !emailSearch.includes('@') || !emailSearch.includes('.com') || searching ? 'no-drop' : 'pointer'}}
+                        style={{ cursor: !emailSearch || !emailSearch.includes('@') || !emailSearch.includes('.com') || searching ? 'no-drop' : 'pointer' }}
                         className={`
                         flex items-center gap-2 px-4 py-3 rounded-md text-white
                         ${!emailSearch || !emailSearch.includes('@') || !emailSearch.includes('.com') || searching

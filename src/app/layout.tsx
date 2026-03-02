@@ -5,6 +5,7 @@ import { AuthProvider } from "@/src/contexts/AuthContexts";
 import RouteProgress from "../components/members/preloader";
 import { ScreenProvider } from "../contexts/ScreenContexts";
 import { getUser } from "../functions";
+import { Toaster } from "react-hot-toast";
 
 const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700", "800", "900"],
@@ -29,6 +30,7 @@ export default async function RootLayout({ children, }: Readonly<{ children: Rea
         <RouteProgress />
         <ScreenProvider>
           {children}
+          <Toaster position="top-right" />
         </ScreenProvider>
         
       </body>

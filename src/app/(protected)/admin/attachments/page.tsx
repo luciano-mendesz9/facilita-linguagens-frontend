@@ -103,10 +103,10 @@ export default function Attachments() {
     useEffect(() => {
         if (selectedIds.size < textsView.length) {
             setSelectAll(false);
-        } else if(selectedIds.size === textsView.length && !selectAll){
+        } else if (selectedIds.size === textsView.length && !selectAll) {
             setSelectAll(true);
         }
-        
+
     }, [selectedIds])
 
     // 🔥 O(1) lookup
