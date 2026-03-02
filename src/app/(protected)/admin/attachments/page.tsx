@@ -8,7 +8,7 @@ import StatusBadge from "@/src/components/members/status-badge";
 import AdminAddGenrePopup from "@/src/components/pop-ups/admin-add-genres";
 import { DataGenreType, DataTextType } from "@/src/types/datas.types";
 import { CircleUserIcon, EyeIcon, ListFilterPlusIcon, PencilIcon, TagIcon, Trash2Icon } from "lucide-react";
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 
 type TextViewModel = {
     publicId: string;
@@ -98,6 +98,16 @@ export default function Attachments() {
     ]);
 
     const [isLoading] = useState(false);
+
+
+    useEffect(() => {
+        if (selectedIds.size < textsView.length) {
+            setSelectAll(false);
+        } else if(selectedIds.size === textsView.length && !selectAll){
+            setSelectAll(true);
+        }
+        
+    }, [selectedIds])
 
     // 🔥 O(1) lookup
     const genresMap = useMemo(() => {
