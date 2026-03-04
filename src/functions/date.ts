@@ -1,5 +1,6 @@
 export function formatPrismaDate(
-    dateInput: string | Date,
+    dateInput: string,
+    char: string = '/',
     timeZone = 'America/Fortaleza'
 ) {
     const date = new Date(dateInput)
@@ -34,7 +35,7 @@ export function formatPrismaDate(
         monthNameRaw.charAt(0).toUpperCase() + monthNameRaw.slice(1)
 
     return {
-        date: `${day}/${month}/${year}`,
+        date: `${day}${char}${month}${char}${year}`,
         time: `${hour}h${minute}`,
         monthName
     }

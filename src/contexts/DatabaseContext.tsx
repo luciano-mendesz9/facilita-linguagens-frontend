@@ -3,7 +3,8 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import UserType from '@my-types/user.type';
 import { DataGenreType } from '../types/datas.types';
-import { getCollaborators } from '../functions';
+import { getCollaborators, getGenres } from '../functions';
+import toast from 'react-hot-toast';
 
 type DatabaseContextData = {
   genres: DataGenreType[],
@@ -23,19 +24,32 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
 
   async function fetchCollaborators() {
     setIsLoading(true)
+    const toastId = toast.loading('Sincronizando Colaboradores...');
     const data = await getCollaborators({});
 
     if (!data) {
       setIsLoading(false)
+      toast.dismiss(toastId);
       return setCollaborators(collaborators);
     }
 
     setCollaborators(data);
     setIsLoading(false)
+    toast.dismiss(toastId);
   }
 
   async function fetchGenres() {
+    const toastId = toast.loading('Sincronizando Gêneros...');
+    const data = await getGenres({});
 
+    if (!data) {
+      setIsLoading(false)
+      toast.dismiss(toastId);
+      return setGenres(genres);
+    }
+
+    setGenres(data);
+    toast.dismiss(toastId);
   }
 
   useEffect(() => {

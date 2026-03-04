@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import { AuthProvider } from "@/src/contexts/AuthContexts";
 import RouteProgress from "../components/members/preloader";
 import { ScreenProvider } from "../contexts/ScreenContexts";
 import { getUser } from "../functions";
