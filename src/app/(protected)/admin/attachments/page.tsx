@@ -6,6 +6,7 @@ import Button from "@/src/components/members/button";
 import Line from "@/src/components/members/line";
 import StatusBadge from "@/src/components/members/status-badge";
 import AdminAddGenrePopup from "@/src/components/pop-ups/admin-add-genres";
+import AdminAddTextPopup from "@/src/components/pop-ups/admin-add-texts";
 import { useDatabase } from "@/src/contexts/DatabaseContext";
 import { formatPrismaDate } from "@/src/functions/date";
 import { DataGenreType, DataTextType } from "@/src/types/datas.types";
@@ -83,7 +84,8 @@ export default function Attachments() {
 
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
     const [selectAll, setSelectAll] = useState(false)
-    const [addGenretorPopuOn, setAddGenretorPopuOn] = useState(false);
+    const [addGenrePopuOn, setAddGenrePopuOn] = useState(false);
+    const [addTextPopuOn, setAddTextPopuOn] = useState(false);
     const [genreForEditing, setGenreForEditing] = useState<DataGenreType | null>(null);
 
     const { genres, fetchGenres } = useDatabase();
@@ -160,23 +162,28 @@ export default function Attachments() {
                     styles="w-65 h-16"
                     bgColor="bg-green-600"
                     title="+ adicionar texto"
+                    action={() => setAddTextPopuOn(true)}
                 />
                 <Button
                     styles="w-65 h-16"
                     bgColor="bg-indigo-600"
                     title="+ adicionar gênero"
-                    action={() => setAddGenretorPopuOn(true)}
+                    action={() => setAddGenrePopuOn(true)}
                 />
             </div>
 
-            {addGenretorPopuOn && <AdminAddGenrePopup
+            {addGenrePopuOn && <AdminAddGenrePopup
                 genres={genres}
                 isCreateGenre={!(!!genreForEditing)}
                 genreForEditing={genreForEditing}
                 closeAction={() => {
-                    setAddGenretorPopuOn(false);
+                    setAddGenrePopuOn(false);
                     setGenreForEditing(null);
                 }}
+            />}
+
+            {addTextPopuOn && <AdminAddTextPopup
+                closeAction={() => setAddTextPopuOn(false)}
             />}
 
             <div className="flex items-start mt-10 gap-5">
@@ -253,7 +260,7 @@ export default function Attachments() {
                                         className="bg-gray-200 flex justify-between items-center p-2 py-3 rounded-lg hover:bg-gray-400"
                                         onClick={() => {
                                             setGenreForEditing(genre);
-                                            setAddGenretorPopuOn(true);
+                                            setAddGenrePopuOn(true);
                                         }}
                                     >
                                         <div className="flex flex-col items-start">
