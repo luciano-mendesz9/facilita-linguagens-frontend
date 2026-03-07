@@ -1,6 +1,6 @@
 export type DataGenreType = {
     id: number;
-    createAt: string | Date;
+    createdAt: string;
     name: string;
     color: string;
     creatorName: string;

@@ -8,6 +8,8 @@ import { createNewGenre } from "@/src/app/(protected)/admin/attachments/actions"
 import { useAuth } from "@/src/contexts/AuthContexts";
 import { useDatabase } from "@/src/contexts/DatabaseContext";
 import toast from "react-hot-toast";
+import { formatPrismaDate } from "@/src/functions/date";
+import { deleteGenre } from "@/src/functions";
 
 type Props = {
     closeAction: () => void;
@@ -21,7 +23,7 @@ type GenreForm = {
     name: string;
     color: string;
     creatorName?: string;
-    createAt?: string | Date;
+    createdAt?: string;
 }
 
 const EMPTY_FORM: GenreForm = {
@@ -49,7 +51,7 @@ export default function AdminAddGenrePopup({
                 name: genreForEditing.name,
                 color: genreForEditing.color,
                 creatorName: genreForEditing.creatorName,
-                createAt: genreForEditing.createAt
+                createdAt: genreForEditing.createdAt
 
             });
         } else {
@@ -63,6 +65,25 @@ export default function AdminAddGenrePopup({
         setForm(prev => ({ ...prev, [field]: value }));
     };
 
+    const handleDeleteGenre = async () => {
+        if (!isEditing || !form.id) return;
+        const toastId = toast.loading('Deletando "' + form.name + '", aguarde...');
+
+        const res = await deleteGenre({ id: form.id });
+        toast.dismiss(toastId);
+
+        if (res?.success) {
+            setTimeout(() => {
+                closeAction();
+                toast.success(res.message);
+            }, 200);
+        } else {
+            toast.error(res?.message as string);
+            return;
+        }
+        fetchGenres();
+    }
+
     const handleCreateGenre = async () => {
 
         try {
@@ -72,7 +93,7 @@ export default function AdminAddGenrePopup({
                 return;
             }
 
-            if(form.color === '#ffffff' || form.color === '#fff'){
+            if (form.color === '#ffffff' || form.color === '#fff') {
                 toast.error('Não utilize cor branca para essa ação.');
                 return;
             }
@@ -81,7 +102,7 @@ export default function AdminAddGenrePopup({
             genres.map((g) => {
                 if (g.name.toLocaleLowerCase() === form.name.toLocaleLowerCase()) {
                     setIsLoading(false);
-                    toast.error('Não é possível salvar esse gênero com o nome ' + form.name + ', pois ele já existe.');
+                    toast.error('Já existe um gênero chamado ' + form.name + '. Experimente um outro gênero.');
 
                     throw new Error('ERRO_GENERO_JA_EXISTE')
                 }
@@ -109,7 +130,9 @@ export default function AdminAddGenrePopup({
         }
     }
 
+    const [cacheEdting, setCacheEditing] = useState('');
 
+    const cacheText = form.name;
     return (
         <PopUp
             actionClose={closeAction}
@@ -118,7 +141,7 @@ export default function AdminAddGenrePopup({
                     ? `Editar Gênero ${form?.name}`
                     : 'Adicionar Gênero Textual',
                 desc: isEditing
-                    ? `Criado por ${form?.creatorName} | ${form.createAt}`
+                    ? `Criado por ${form?.creatorName} | ${formatPrismaDate(form.createdAt!, '/').date}`
                     : 'campos com * são obrigatórios'
             }}
         >
@@ -126,6 +149,10 @@ export default function AdminAddGenrePopup({
 
                 {/* FORM */}
                 <div className="flex-3 mt-10.5">
+                    {isEditing && <div>
+                        <span>Editando Gênero: <strong>{cacheEdting ? cacheEdting : cacheText}</strong> ⚠️</span>
+                        <br />
+                    </div>}
 
                     <label className="text-[15px] font-medium">
                         Nome do Gênero *:
@@ -169,6 +196,7 @@ export default function AdminAddGenrePopup({
                     <Button
                         styles="w-full mt-5"
                         disabled={!isEditing}
+                        action={handleDeleteGenre}
                         bgColor="bg-red-600"
                         title="Deletar gênero"
                     />
@@ -188,15 +216,17 @@ export default function AdminAddGenrePopup({
                         {genres.map((genre) => (
                             <button
                                 key={genre.id}
-                                onClick={() =>
+                                onClick={() => {
                                     setForm({
                                         id: genre.id,
                                         name: genre.name,
                                         color: genre.color,
                                         creatorName: genre.creatorName,
-                                        createAt: genre.createAt
-                                    })
-                                }
+                                        createdAt: formatPrismaDate(genre.createdAt, '/').date
+                                    });
+
+                                    setCacheEditing(genre.name)
+                                }}
                                 className="flex justify-between items-center rounded-lg hover:bg-gray-200 p-2 w-full"
                             >
                                 <span className="font-semibold">

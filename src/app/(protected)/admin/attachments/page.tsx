@@ -6,6 +6,9 @@ import Button from "@/src/components/members/button";
 import Line from "@/src/components/members/line";
 import StatusBadge from "@/src/components/members/status-badge";
 import AdminAddGenrePopup from "@/src/components/pop-ups/admin-add-genres";
+import AdminAddTextPopup from "@/src/components/pop-ups/admin-add-texts";
+import { useDatabase } from "@/src/contexts/DatabaseContext";
+import { formatPrismaDate } from "@/src/functions/date";
 import { DataGenreType, DataTextType } from "@/src/types/datas.types";
 import { CircleUserIcon, EyeIcon, ListFilterPlusIcon, PencilIcon, TagIcon, Trash2Icon } from "lucide-react";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
@@ -81,16 +84,11 @@ export default function Attachments() {
 
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
     const [selectAll, setSelectAll] = useState(false)
-    const [addGenretorPopuOn, setAddGenretorPopuOn] = useState(false);
+    const [addGenrePopuOn, setAddGenrePopuOn] = useState(false);
+    const [addTextPopuOn, setAddTextPopuOn] = useState(false);
     const [genreForEditing, setGenreForEditing] = useState<DataGenreType | null>(null);
 
-    const [genres] = useState<DataGenreType[]>([
-        { color: '#e705c5', createAt: '12/12', creatorName: 'Luciano', id: 1, name: 'Romance', totalTexts: 10 },
-        { color: '#4d05e7', createAt: '23/12', creatorName: 'Ryan', id: 2, name: 'Poema', totalTexts: 10 },
-        { color: '#3f2607', createAt: '24/12', creatorName: 'Gabriel', id: 3, name: 'Artigo', totalTexts: 10 },
-        { color: '#ad8a0a', createAt: '25/12', creatorName: 'Rita', id: 4, name: 'Aventura', totalTexts: 10 },
-        { color: '#ff8b0b', createAt: '25/12', creatorName: 'Rita', id: 5, name: 'Aventura', totalTexts: 10 },
-    ]);
+    const { genres, fetchGenres } = useDatabase();
 
     const [texts] = useState<DataTextType[]>([
         { createdAt: '23 de Janeiro, 20h43', genreId: 1, isImageOnly: false, publicId: '01', title: 'O Patinho Feio' },
@@ -99,7 +97,6 @@ export default function Attachments() {
 
     const [isLoading] = useState(false);
 
-
     useEffect(() => {
         if (selectedIds.size < textsView.length) {
             setSelectAll(false);
@@ -107,7 +104,9 @@ export default function Attachments() {
             setSelectAll(true);
         }
 
-    }, [selectedIds])
+        if (genres.length === 0) { fetchGenres(); }
+
+    }, [selectedIds]);
 
     // 🔥 O(1) lookup
     const genresMap = useMemo(() => {
@@ -163,23 +162,28 @@ export default function Attachments() {
                     styles="w-65 h-16"
                     bgColor="bg-green-600"
                     title="+ adicionar texto"
+                    action={() => setAddTextPopuOn(true)}
                 />
                 <Button
                     styles="w-65 h-16"
                     bgColor="bg-indigo-600"
                     title="+ adicionar gênero"
-                    action={() => setAddGenretorPopuOn(true)}
+                    action={() => setAddGenrePopuOn(true)}
                 />
             </div>
 
-            {addGenretorPopuOn && <AdminAddGenrePopup
+            {addGenrePopuOn && <AdminAddGenrePopup
                 genres={genres}
                 isCreateGenre={!(!!genreForEditing)}
                 genreForEditing={genreForEditing}
                 closeAction={() => {
-                    setAddGenretorPopuOn(false);
+                    setAddGenrePopuOn(false);
                     setGenreForEditing(null);
                 }}
+            />}
+
+            {addTextPopuOn && <AdminAddTextPopup
+                closeAction={() => setAddTextPopuOn(false)}
             />}
 
             <div className="flex items-start mt-10 gap-5">
@@ -256,7 +260,7 @@ export default function Attachments() {
                                         className="bg-gray-200 flex justify-between items-center p-2 py-3 rounded-lg hover:bg-gray-400"
                                         onClick={() => {
                                             setGenreForEditing(genre);
-                                            setAddGenretorPopuOn(true);
+                                            setAddGenrePopuOn(true);
                                         }}
                                     >
                                         <div className="flex flex-col items-start">
@@ -264,12 +268,12 @@ export default function Attachments() {
                                                 {genre.name} - {genre.totalTexts} Textos
                                             </span>
                                             <span className="text-gray-500 text-[12px]">
-                                                De {genre.creatorName} | {genre.createAt as string}
+                                                De {genre.creatorName} | {formatPrismaDate(genre.createdAt, '.').date}
                                             </span>
                                         </div>
 
                                         <div
-                                            style={{ backgroundColor: genre.color }}
+                                            style={{ backgroundColor: genre.color === '#fff' || genre.color === '#ffffff' ? '#007bff' : genre.color }}
                                             className="w-8 h-8 rounded-full flex items-center justify-center"
                                         >
                                             <TagIcon color="white" className="w-5 h-5" />
