@@ -88,12 +88,7 @@ export default function Attachments() {
     const [addTextPopuOn, setAddTextPopuOn] = useState(false);
     const [genreForEditing, setGenreForEditing] = useState<DataGenreType | null>(null);
 
-    const { genres, fetchGenres } = useDatabase();
-
-    const [texts] = useState<DataTextType[]>([
-        { createdAt: '23 de Janeiro, 20h43', genreId: 1, isImageOnly: false, publicId: '01', title: 'O Patinho Feio' },
-        { createdAt: '23 de Janeiro, 20h43', genreId: 2, isImageOnly: false, publicId: '02', title: 'Gabriela, a Donzela' }
-    ]);
+    const { genres, fetchGenres, texts } = useDatabase();
 
     const [isLoading] = useState(false);
 
@@ -122,7 +117,7 @@ export default function Attachments() {
     // 🔥 ViewModel (join sem custo no render)
     const textsView = useMemo<TextViewModel[]>(() => {
         return texts.map(text => {
-            const genre = genresMap.get(text.genreId);
+            const genre = genresMap.get(text.genre.id);
 
             return {
                 publicId: text.publicId,

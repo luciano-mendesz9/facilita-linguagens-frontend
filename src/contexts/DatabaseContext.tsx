@@ -2,14 +2,16 @@
 
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import UserType from '@my-types/user.type';
-import { DataGenreType } from '../types/datas.types';
-import { getCollaborators, getGenres } from '../functions';
+import { DataGenreType, DataTextType } from '../types/datas.types';
+import { getCollaborators, getGenres, getTexts } from '../functions';
 import toast from 'react-hot-toast';
 
 type DatabaseContextData = {
   genres: DataGenreType[],
   fetchGenres: () => void;
+  fetchTexts: () => void;
   fetchCollaborators: () => void;
+  texts: DataTextType[];
   collaborators: UserType[];
   isLoading: boolean;
 }
@@ -19,6 +21,7 @@ const DatabaseContext = createContext<DatabaseContextData | undefined>(undefined
 export function DatabaseProvider({ children }: { children: ReactNode }) {
 
   const [genres, setGenres] = useState<DataGenreType[]>([]);
+  const [texts, setTexts] = useState<DataTextType[]>([]);
   const [collaborators, setCollaborators] = useState<UserType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -52,14 +55,29 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
     toast.dismiss(toastId);
   }
 
+  async function fetchTexts() {
+    const toastId = toast.loading('Sincronizando Textos...');
+    const data = await getTexts({});
+
+    if (!data) {
+      setIsLoading(false)
+      toast.dismiss(toastId);
+      return setTexts(texts);
+    }
+
+    setTexts(data);
+    toast.dismiss(toastId);
+  }
+
   useEffect(() => {
     fetchGenres();
     fetchCollaborators();
+    fetchTexts();
   }, []);
 
 
   return (
-    <DatabaseContext.Provider value={{ genres, fetchGenres, fetchCollaborators, collaborators, isLoading }}>
+    <DatabaseContext.Provider value={{ genres, fetchGenres, texts, fetchTexts, fetchCollaborators, collaborators, isLoading }}>
       {children}
     </DatabaseContext.Provider>
   )

@@ -1,23 +1,27 @@
+'use client';
 import ActivityLogsAdmin from "@/src/components/admin/activity-logs";
 import InfoBoxesAdmin from "@/src/components/admin/info-boxes";
 import Button from "@/src/components/members/button";
+import { useDatabase } from "@/src/contexts/DatabaseContext";
 import WhiteBoxAdmin from "@admins-components/white-box";
 
 export default function DashboardAdmin() {
+
+    const { texts } = useDatabase();
     return (
         <div>
 
             <InfoBoxesAdmin
                 data={[
-                    { data: '3.324', desc: 'Usuários ativos nos últimos 7 dias' },
+                    { data: '0', desc: 'Usuários ativos nos últimos 7 dias' },
 
                     {
-                        data: '294',
+                        data: `${texts.length}`,
                         desc: (
                             <>
-                                Textos Anexados.{' '} 
+                                Textos Anexados.{' '}
                                 <a
-                                    href="/admin/texts"
+                                    href="/admin/attachments"
                                     className="font-semibold underline hover:text-blue-300"
                                 >
                                     VER TEXTOS
@@ -27,7 +31,7 @@ export default function DashboardAdmin() {
                     },
 
                     {
-                        data: 'R$ 20.784',
+                        data: 'R$ 0,00',
                         desc: (
                             <p className="text-center">
                                 Em assinaturas nos últimos 7 dias{' '} <br />

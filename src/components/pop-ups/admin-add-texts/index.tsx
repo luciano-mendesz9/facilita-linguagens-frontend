@@ -5,6 +5,7 @@ import PopUp from "../../members/pop-up"
 import Button from "../../members/button"
 import toast from "react-hot-toast"
 import { useDatabase } from "@/src/contexts/DatabaseContext"
+import AdminAddGenrePopup from "../admin-add-genres"
 
 type Props = {
     closeAction: () => void
@@ -20,9 +21,11 @@ export default function AdminAddTextPopup({ closeAction }: Props) {
     const [content, setContent] = useState('')
     const [referenceUrl, setReferenceUrl] = useState('')
 
+    const [isLoading, setIsLoading] = useState(false)
     const [imageMode, setImageMode] = useState(false)
 
     const [images, setImages] = useState<File[]>([])
+    const [addGenrePopuOn, setAddGenrePopuOn] = useState(false);
 
     useEffect(() => {
         fetchGenres()
@@ -49,8 +52,8 @@ export default function AdminAddTextPopup({ closeAction }: Props) {
 
     function handleToggle() {
 
-        if (!images.length) {
-            toast.error('Adicione pelo menos uma imagem antes de ativar.')
+        if (content) {
+            toast.error('Você não pode ativar essa função com um conteúdo de texto inserido.')
             return
         }
 
@@ -74,30 +77,62 @@ export default function AdminAddTextPopup({ closeAction }: Props) {
             return
         }
 
-        if (!images.length) {
-            toast.error('Adicione ao menos uma imagem')
+        if (imageMode && !images.length) {
+            toast.error('O "Somente Imagens" está ativo. Adicione ao menos uma imagem para prosseguir')
             return
         }
 
         const toastId = toast.loading('Salvando texto...')
-
+        setIsLoading(true)
         try {
 
-            // aqui você colocaria sua action
+            const formData = new FormData()
 
-            toast.success('Texto cadastrado com sucesso!')
+            formData.append('title', title)
+            formData.append('authorName', author || '')
+            formData.append('genreId', String(selectedGenre))
+            formData.append('isImageOnly', String(imageMode))
+
+            if (!imageMode) {
+                formData.append('content', content)
+            }
+
+            if (referenceUrl) {
+                formData.append('referenceUrl', referenceUrl)
+            }
+
+            images.forEach(img => {
+                formData.append('images', img)
+            })
+
+            const res = await fetch('http://localhost:3001/attachments/texts', {
+                method: 'POST',
+                body: formData,
+                credentials: 'include'
+            })
+
+            if (!res.ok) {
+                throw new Error('Erro ao salvar texto')
+            }
+
+            const data = await res.json()
+
+            if (data.images?.errors > 0) {
+                toast.success(`Texto salvo! ${data.images.uploaded} imagens enviadas, ${data.images.errors} falharam.`)
+            } else {
+                toast.success('Texto cadastrado com sucesso!')
+            }
+
+            setIsLoading(false)
             closeAction()
 
         } catch {
-
             toast.error('Erro ao salvar texto')
-
+            setIsLoading(false)
         } finally {
-
             toast.dismiss(toastId)
-
+            setIsLoading(false)
         }
-
     }
 
     return (
@@ -109,6 +144,14 @@ export default function AdminAddTextPopup({ closeAction }: Props) {
                 desc: 'Obs: campos com * são obrigatórios'
             }}
         >
+            {addGenrePopuOn && <AdminAddGenrePopup
+                genres={genres}
+                isCreateGenre={true}
+                genreForEditing={null}
+                closeAction={() => {
+                    setAddGenrePopuOn(false);
+                }}
+            />}
 
             <div className="w-190 flex flex-col gap-4 mt-6">
 
@@ -244,7 +287,7 @@ export default function AdminAddTextPopup({ closeAction }: Props) {
 
                             </select>
 
-                            <Button styles="h-10.5 flex justify-center items-center hover:bg-green-700 bg-green-600" title="+ gênero" />
+                            <Button action={() => setAddGenrePopuOn(true)} styles="h-10.5 flex justify-center items-center hover:bg-green-700 bg-green-600" title="+ gênero" />
                         </div>
 
                     </div>
@@ -296,6 +339,7 @@ export default function AdminAddTextPopup({ closeAction }: Props) {
 
                 <Button
                     styles="w-full mt-4"
+                    disabled={isLoading}
                     bgColor="bg-green-600"
                     action={handleSubmit}
                     title="Salvar Texto"

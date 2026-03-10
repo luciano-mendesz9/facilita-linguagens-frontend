@@ -5,7 +5,7 @@ import { cookies } from 'next/headers'
 
 import { URL_SERVER } from '../constants/env';
 import UserType from '@my-types/user.type'
-import { DataGenreType } from '../types/datas.types';
+import { DataGenreType, DataTextType } from '../types/datas.types';
 
 export const getUser = cache(async () => {
 
@@ -151,6 +151,35 @@ export const getGenres = async ({ id }: { id?: number }) => {
         }
 
         return data as DataGenreType[];
+    } catch (error) {
+        return null
+    }
+}
+export const getTexts = async ({ id }: { id?: number }) => {
+    try {
+        const token = await getCookieToken();
+        if (!token) return null;
+
+        const res = await fetch(`${URL_SERVER}/attachments/texts${id ? '?id=' + id : ''}`, {
+            method: 'GET',
+            cache: 'no-store',
+            headers: {
+                Cookie: `auth_token=${token}`
+            },
+            credentials: 'include'
+        });
+
+        if (!res.ok) {
+            throw new Error('fetch texts error')
+        }
+
+        const data = await res.json();
+
+        if (id) {
+            return [data as DataTextType];
+        }
+
+        return data as DataTextType[];
     } catch (error) {
         return null
     }
