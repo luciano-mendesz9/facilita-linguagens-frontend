@@ -9,7 +9,7 @@ import AdminAddGenrePopup from "@/src/components/pop-ups/admin-add-genres";
 import AdminAddTextPopup from "@/src/components/pop-ups/admin-add-texts";
 import { useDatabase } from "@/src/contexts/DatabaseContext";
 import { formatPrismaDate } from "@/src/functions/date";
-import { DataGenreType, DataTextType } from "@/src/types/datas.types";
+import { DataGenreType } from "@/src/types/datas.types";
 import { CircleUserIcon, EyeIcon, ListFilterPlusIcon, PencilIcon, TagIcon, Trash2Icon } from "lucide-react";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 
@@ -76,7 +76,7 @@ const TextRow = memo(({ text, checked, onSelect }: TextRowProps) => {
             </div>
         </div>
     );
-});
+});5
 
 TextRow.displayName = 'TextRow';
 
@@ -117,14 +117,17 @@ export default function Attachments() {
     // 🔥 ViewModel (join sem custo no render)
     const textsView = useMemo<TextViewModel[]>(() => {
         return texts.map(text => {
-            const genre = genresMap.get(text.genre.id);
+
+            const date = formatPrismaDate(text.createdAt as string);
+
+            const createdAt = `${date.date.split('/')[0]} de ${date.monthName}, ${date.time}`
 
             return {
                 publicId: text.publicId,
                 title: text.title,
-                createdAt: text.createdAt as string,
-                genreName: genre?.name ?? 'Sem gênero',
-                genreColor: genre?.color ?? '#ccc'
+                createdAt: createdAt,
+                genreName:text.genre.name ?? 'Sem gênero',
+                genreColor: text.genre.color ?? '#ccc'
             };
         });
     }, [texts, genresMap]);

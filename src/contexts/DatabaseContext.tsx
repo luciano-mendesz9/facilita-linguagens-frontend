@@ -44,7 +44,6 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
   async function fetchGenres() {
     const toastId = toast.loading('Sincronizando Gêneros...');
     const data = await getGenres({});
-
     if (!data) {
       setIsLoading(false)
       toast.dismiss(toastId);
@@ -53,6 +52,7 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
 
     setGenres(data);
     toast.dismiss(toastId);
+
   }
 
   async function fetchTexts() {

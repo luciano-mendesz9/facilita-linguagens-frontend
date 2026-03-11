@@ -13,7 +13,7 @@ type Props = {
 
 export default function AdminAddTextPopup({ closeAction }: Props) {
 
-    const { fetchGenres, genres } = useDatabase();
+    const { fetchGenres, genres, fetchTexts } = useDatabase();
     const [selectedGenre, setSelectedGenre] = useState<number | null>(null)
 
     const [title, setTitle] = useState('')
@@ -123,8 +123,9 @@ export default function AdminAddTextPopup({ closeAction }: Props) {
                 toast.success('Texto cadastrado com sucesso!')
             }
 
-            setIsLoading(false)
-            closeAction()
+            setIsLoading(false);
+            fetchTexts();
+            closeAction();
 
         } catch {
             toast.error('Erro ao salvar texto')
