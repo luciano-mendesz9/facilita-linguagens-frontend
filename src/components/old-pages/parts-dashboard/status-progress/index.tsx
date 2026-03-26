@@ -22,9 +22,9 @@ export default function StatusProgress({
 }: StatusProgressProps) {
 
   return(
-    <div className="bg-white border-1 border-gray-300 rounded-3xl shadow-md hover:shadow-lg transition flex w-full max-w-sm mx-auto sm:w-68 font-semibold relative">
+    <div className="bg-white border border-gray-300 rounded-3xl shadow-md hover:shadow-lg transition flex w-full max-w-sm mx-auto sm:w-68 font-semibold relative">
       <div className="border-r-2 border-gray-200 p-5 relative">
-        <div className={`border-1 ${borderIconColor} ${bgIconColor} p-3 h-16 w-16 rounded-4xl`}>
+        <div className={`border ${borderIconColor} ${bgIconColor} p-3 h-16 w-16 rounded-4xl`}>
           <Icon size={38} strokeWidth={1} className={iconColor}/>
         </div>
       </div>
