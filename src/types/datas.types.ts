@@ -12,6 +12,11 @@ export type DataTextType = {
     title: string;
     isImageOnly: boolean;
     referenceUrl?: string;
-    createdAt: Date | string;
-    genreId: number;
+    createdAt: string;
+    genre: {
+        id: number;
+        color: string;
+        name: string;
+    }
 }
+
