@@ -12,6 +12,8 @@ import { formatPrismaDate } from "@/src/functions/date";
 import { DataGenreType } from "@/src/types/datas.types";
 import { CircleUserIcon, EyeIcon, ListFilterPlusIcon, PencilIcon, TagIcon, Trash2Icon } from "lucide-react";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import TextsDataBox from "./textsBox";
+import GenresDataBox from "./genresDataBox";
 
 type TextViewModel = {
     publicId: string;
@@ -76,32 +78,19 @@ const TextRow = memo(({ text, checked, onSelect }: TextRowProps) => {
             </div>
         </div>
     );
-});5
+});
 
 TextRow.displayName = 'TextRow';
 
 export default function Attachments() {
 
-    const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
-    const [selectAll, setSelectAll] = useState(false)
     const [addGenrePopuOn, setAddGenrePopuOn] = useState(false);
     const [addTextPopuOn, setAddTextPopuOn] = useState(false);
     const [genreForEditing, setGenreForEditing] = useState<DataGenreType | null>(null);
 
-    const { genres, fetchGenres, texts } = useDatabase();
+    const { genres, texts } = useDatabase();
 
     const [isLoading] = useState(false);
-
-    useEffect(() => {
-        if (selectedIds.size < textsView.length) {
-            setSelectAll(false);
-        } else if (selectedIds.size === textsView.length && !selectAll) {
-            setSelectAll(true);
-        }
-
-        if (genres.length === 0) { fetchGenres(); }
-
-    }, [selectedIds]);
 
     // 🔥 O(1) lookup
     const genresMap = useMemo(() => {
@@ -126,27 +115,13 @@ export default function Attachments() {
                 publicId: text.publicId,
                 title: text.title,
                 createdAt: createdAt,
-                genreName:text.genre.name ?? 'Sem gênero',
+                genreName: text.genre.name ?? 'Sem gênero',
                 genreColor: text.genre.color ?? '#ccc'
             };
         });
     }, [texts, genresMap]);
 
-    const handleSelectItem = useCallback((checked: boolean, id: string) => {
-        setSelectedIds(prev => {
-            const next = new Set(prev);
-            checked ? next.add(id) : next.delete(id);
-            return next;
-        });
-    }, []);
 
-    const handleSelectAll = () => {
-        const ids: Set<string> = new Set();
-        if (!selectAll) {
-            textsView.map((txt) => ids.add(txt.publicId));
-        }
-        setSelectedIds(ids);
-    }
 
     return (
         <div className="overflow-y-auto h-screen">
@@ -186,56 +161,11 @@ export default function Attachments() {
 
             <div className="flex items-start mt-10 gap-5">
                 <div className="flex-5">
-                    <WhiteBoxAdmin>
-                        <div className="flex items-center justify-between mb-5">
-                            <h2 className="text-[20px] font-semibold">{textsView.length} {textsView.length === 1 ? 'Texto Anexado' : 'Textos Anexados'}</h2>
-                            <div className="flex items-center gap-2">
-                                <div className="flex items-center gap-2">
-                                    <input checked={selectAll} onChange={() => {
-                                        setSelectAll(selectAll ? false : true);
-                                        handleSelectAll();
-
-                                    }} type="checkbox" className="cursor-pointer" name="select-all" id="select-all" />
-                                    <label htmlFor="select-all" className="cursor-pointer font-medium hover:text-blue-500">Selecionar Todos</label>
-                                    {selectedIds.size > 0 && <span>[ {selectedIds.size} ]</span>}
-                                </div>
-                                {selectedIds.size > 0 && <button
-                                    style={{ cursor: selectedIds.size === 0 ? 'no-drop' : 'pointer' }}
-                                    className={`flex items-center gap-3 text-[14px] px-5 ${selectedIds.size === 0 ? 'bg-gray-300 text-gray-500' : 'bg-red-400 text-white'} py-2 rounded-md  font-medium`}
-                                >
-                                    DELETAR SELEÇÃO
-                                    <Trash2Icon size={20} />
-                                </button>}
-                                <button onClick={() => alert('Os filtros ainda não estão disponíveis para essa tabela.')} className="hover:text-blue-500 cursor-pointer">
-                                    <ListFilterPlusIcon />
-                                </button>
-                            </div>
-                        </div>
-
-                        <Line />
-                        <br />
-
-                        {!textsView.length ? (
-                            <p className="text-[14px] text-gray-600 text-center">
-                                {isLoading ? 'Buscando textos, aguarde...' : 'Não há textos anexados'}
-                            </p>
-                        ) : (
-                            <div className="flex flex-col gap-7">
-                                {textsView.map(text => (
-                                    <TextRow
-                                        key={text.publicId}
-                                        text={text}
-                                        checked={selectedIds.has(text.publicId)}
-                                        onSelect={handleSelectItem}
-                                    />
-                                ))}
-                            </div>
-                        )}
-                    </WhiteBoxAdmin>
+                    <TextsDataBox textsView={textsView} />
                 </div>
 
                 <div className="flex-2">
-                    <WhiteBoxAdmin>
+                    {/* <WhiteBoxAdmin>
                         <div className="flex items-center flex-col">
                             <h1 className="text-[20px] font-semibold">Gêneros Textuais</h1>
                             <span className="text-center text-[12.5px] text-gray-600 mb-3">
@@ -280,7 +210,8 @@ export default function Attachments() {
                                 ))}
                             </div>
                         )}
-                    </WhiteBoxAdmin>
+                    </WhiteBoxAdmin> */}
+                    <GenresDataBox setAddGenrePopuOn={setAddGenrePopuOn} />
                 </div>
             </div>
         </div>

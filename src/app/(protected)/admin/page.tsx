@@ -8,6 +8,7 @@ import WhiteBoxAdmin from "@admins-components/white-box";
 export default function DashboardAdmin() {
 
     const { texts } = useDatabase();
+    
     return (
         <div>
 

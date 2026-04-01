@@ -1,4 +1,5 @@
 import { AuthProvider } from "@/src/contexts/AuthContexts";
+import { HidenAdminComponentsProvider } from "@/src/contexts/HidenAdminComponentsContext";
 import { getUser } from "@/src/functions";
 
 export default async function LayoutProtectedRoutes({ children }: { children: React.ReactNode }) {
@@ -6,7 +7,9 @@ export default async function LayoutProtectedRoutes({ children }: { children: Re
 
     return (
         <AuthProvider initialUser={user}>
-            {children}
+            <HidenAdminComponentsProvider>
+                {children}
+            </HidenAdminComponentsProvider>
         </AuthProvider>
     )
 } 
