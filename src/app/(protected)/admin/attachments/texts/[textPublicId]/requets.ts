@@ -42,7 +42,7 @@ export async function fetchTextDetails(textPublicId: string) {
         const token = await getCookieToken();
         if (!token) return null;
 
-        const res = await fetch(`${URL_SERVER}/attachments/texts/details?id=${textPublicId}`, {
+        const res = await fetch(`${URL_SERVER}/attachments/texts/${textPublicId}/details`, {
             method: 'GET',
             cache: 'no-store',
             headers: {
