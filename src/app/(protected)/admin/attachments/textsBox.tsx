@@ -160,7 +160,7 @@ export default function TextsDataBox({ textsView }: { textsView: TextViewModel[]
                     {isLoading ? 'Buscando textos, aguarde...' : 'Não há textos anexados'}
                 </p>
             ) : (
-                <div className="flex flex-col gap-7">
+                <div className="flex flex-col gap-7 max-h-100 overflow-y-auto">
                     {textsView.map(text => (
                         <TextRow
                             key={text.publicId}

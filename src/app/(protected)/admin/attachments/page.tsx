@@ -124,7 +124,7 @@ export default function Attachments() {
 
 
     return (
-        <div className="overflow-y-auto h-screen">
+        <div className="overflow-y-auto h-screen hide-scrollbar">
             <HeaderTitleAdmin
                 title="Gerenciador de Anexos"
                 desc="Cadastre ou edite textos e gêneros textuais no sistema. Para cadastrar QUESTÕES ao texto, clique no ícone de edição."
@@ -165,55 +165,10 @@ export default function Attachments() {
                 </div>
 
                 <div className="flex-2">
-                    {/* <WhiteBoxAdmin>
-                        <div className="flex items-center flex-col">
-                            <h1 className="text-[20px] font-semibold">Gêneros Textuais</h1>
-                            <span className="text-center text-[12.5px] text-gray-600 mb-3">
-                                <strong>OBS:</strong> Clique em uma das opções para editá-las
-                            </span>
-                        </div>
-
-                        <Line />
-                        <br />
-
-                        {!genres.length ? (
-                            <p className="text-[14px] text-gray-600 text-center">
-                                {isLoading ? 'Buscando gêneros, aguarde...' : 'Não há gêneros anexados'}
-                            </p>
-                        ) : (
-                            <div className="flex gap-3 flex-col h-80 overflow-y-auto">
-                                {genres.map(genre => (
-                                    <button
-                                        key={genre.id}
-                                        className="bg-gray-200 flex justify-between items-center p-2 py-3 rounded-lg hover:bg-gray-400"
-                                        onClick={() => {
-                                            setGenreForEditing(genre);
-                                            setAddGenrePopuOn(true);
-                                        }}
-                                    >
-                                        <div className="flex flex-col items-start">
-                                            <span className="font-semibold">
-                                                {genre.name} - {genre.totalTexts} Textos
-                                            </span>
-                                            <span className="text-gray-500 text-[12px]">
-                                                De {genre.creatorName} | {formatPrismaDate(genre.createdAt, '.').date}
-                                            </span>
-                                        </div>
-
-                                        <div
-                                            style={{ backgroundColor: genre.color === '#fff' || genre.color === '#ffffff' ? '#007bff' : genre.color }}
-                                            className="w-8 h-8 rounded-full flex items-center justify-center"
-                                        >
-                                            <TagIcon color="white" className="w-5 h-5" />
-                                        </div>
-                                    </button>
-                                ))}
-                            </div>
-                        )}
-                    </WhiteBoxAdmin> */}
                     <GenresDataBox setAddGenrePopuOn={setAddGenrePopuOn} />
                 </div>
             </div>
+            <div className="w-full h-25"></div>
         </div>
     );
 }

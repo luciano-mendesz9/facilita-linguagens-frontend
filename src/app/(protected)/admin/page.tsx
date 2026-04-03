@@ -14,7 +14,7 @@ export default function DashboardAdmin() {
 
             <InfoBoxesAdmin
                 data={[
-                    { data: '0', desc: 'Usuários ativos nos últimos 7 dias' },
+                    { data: '0', desc: 'Usuário na Plataforma' },
 
                     {
                         data: `${texts.length}`,
