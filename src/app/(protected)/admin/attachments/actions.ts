@@ -10,6 +10,10 @@ export async function createNewGenre(data: { creatorName: string, color: string,
         const token = await getCookieToken();
         const url = `${URL_SERVER}/attachments/genres`;
 
+        if (!token) {
+            return { success: false };
+        }
+
         const res = await fetch(url, {
             method: 'POST',
             cache: 'no-store',

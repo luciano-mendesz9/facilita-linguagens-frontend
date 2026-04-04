@@ -5,6 +5,9 @@ import { DatabaseProvider } from "@/src/contexts/DatabaseContext";
 import { useAdminControllScreen } from "@/src/contexts/HidenAdminComponentsContext";
 import { useEffect } from "react";
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 export default function LayoutAdmin({ children }: { children: React.ReactNode }) {
 
     const { showComponents, setShowComponents } = useAdminControllScreen();
@@ -35,7 +38,9 @@ export default function LayoutAdmin({ children }: { children: React.ReactNode })
                             <SidebarAdmin />
 
                             <div className="w-full h-full overflow-auto hide-scrollbar">
-                                {children}
+                                <QueryClientProvider client={queryClient}>
+                                    {children}
+                                </QueryClientProvider>
                             </div>
                         </div>
                     </>

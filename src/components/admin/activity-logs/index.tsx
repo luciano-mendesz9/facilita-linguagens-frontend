@@ -1,8 +1,10 @@
+'use client';
 import Image from "next/image";
 import WhiteBoxAdmin from "../white-box";
 
 import ProfileImage from '@assets/profile.png';
 import { MONTHS } from "@/src/constants";
+import { useState } from "react";
 
 const data = [
     {
@@ -62,6 +64,7 @@ const data = [
 ]
 
 function ActionRow({ name, role, action, date }: { name: string; role: string; action: string; date: string }) {
+
     return (
         <div className="flex items-center justify-between pt-3 pb-3 border-b pl-3 pr-3 border-b-gray-400">
             <div className="flex items-center gap-2">
@@ -83,6 +86,7 @@ function ActionRow({ name, role, action, date }: { name: string; role: string; a
 }
 
 export default function ActivityLogsAdmin() {
+    const [rows, setRows] = useState(10);
     return (
         <WhiteBoxAdmin>
             <div className="border border-gray-400 p-3 rounded-lg flex items-center justify-between">
@@ -97,10 +101,11 @@ export default function ActivityLogsAdmin() {
                     <select name="admins" id="admins" className="w-80 p-3 rounded-lg border border-gray-400" >
                         <option value="all">Todos os Admins</option>
                     </select>
+                    <input className="w-20 p-3 rounded-lg border border-gray-400" value={rows} onChange={(e) => setRows(parseInt(e.target.value))} type="number" name="rows" id="rows" max={50} min={1} />
                 </div>
             </div>
             <div className="border border-gray-400 p-3 rounded-lg mt-3 max-h-100 overflow-y-auto">
-                {data.length === 0 ? <span>Não há históricos</span> : data.map((item, index) => (
+                {data.length === 0 ? <span>Não há históricos</span> : data.slice(-rows).map((item, index) => (
                     <ActionRow key={index}
                         name={item.name}
                         role={item.role}
