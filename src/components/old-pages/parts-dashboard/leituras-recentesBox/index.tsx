@@ -58,7 +58,7 @@ export default function LeiturasRecentesBox
                     </div>
                 </nav>
 
-                <div className="bg-white rounded-b-4xl p-5">
+                <div className="bg-white rounded-b-4xl md:p-5 p-2 ">
                     <div className="space-y-3">
                         {recentReadings.map((reading) => (
                             <RecentsReading

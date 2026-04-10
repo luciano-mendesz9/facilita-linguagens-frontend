@@ -5,34 +5,24 @@ import MensageMotivational from "@/src/components/old-pages/parts-dashboard/mens
 import LogoutButton from "@/src/components/old-pages/parts-dashboard/logOut";
 import { LayoutDashboard, FileClock, Trophy, CircleStar, Shapes, UserPen, LogOutIcon, } from "lucide-react";
 import Line from "@/src/components/members/line";
+import SidebarMobile from "@members-components/mobile-sidebar";
 import Image from "next/image";
 import UserProfile from '@assets/profile.png';
 
-export default function SidebarMember() {
+export const menuItems = [
+    { id: 1, title: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
+    { id: 2, title: "Histórico de Leitura", icon: FileClock, path: "/historico" },
+    { id: 3, title: "Ranking", icon: FileClock, path: "/historico" },
+    //{ id: 3, title: "Troféus", icon: Trophy, path: "/trofes" },
+    ///{ id: 4, title: "Conquistas", icon: CircleStar, path: "/conquistas" },
+    //{ id: 5, title: "Desafios", icon: Shapes, path: "/desafios" },
+    { id: 6, title: "Perfil", icon: UserPen, path: "/profile" }
+];
 
+export function Sidebar() {
     const { user } = useAuth();
-
-    // Array com todos os itens do menu - FÁCIL DE MANTER!
-    const menuItems = [
-        { id: 1, title: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
-        { id: 2, title: "Histórico de Leitura", icon: FileClock, path: "/historico" },
-        { id: 3, title: "Troféus", icon: Trophy, path: "/trofes" },
-        { id: 4, title: "Conquistas", icon: CircleStar, path: "/conquistas" },
-        { id: 5, title: "Desafios", icon: Shapes, path: "/desafios" },
-        { id: 6, title: "Perfil", icon: UserPen, path: "/perfil" }
-    ];
-
-    if (user?.isCollaborator) {
-        menuItems.push({
-            id: menuItems.length,
-            title: 'Área Administrativa',
-            icon: GlobeLockIcon,
-            path: '/admin'
-        })
-    }
-
     return (
-        <div className="bg-white h-full w-85 p-4 border-r border-gray-300 relative ">
+        <>
             <div className="flex items-center">
                 <Image
                     width={50}
@@ -63,6 +53,16 @@ export default function SidebarMember() {
                         </a>
                     </li>
                 ))}
+
+                {user?.isCollaborator && (
+                    <li key={'admin'} className="group">
+                        <a href={'/admin'} className="flex items-center gap-2 text-gray-500 font-medium group-hover:text-blue-500 border border-gray-400 p-2.5 rounded-[15px] mt-2 text-[15px]">
+                            <GlobeLockIcon color="gray" size={20} />
+                            {'Painel Admin'}
+                        </a>
+                    </li>
+                )}
+
             </ul>
 
             <div className="absolute bottom-3 w-full float">
@@ -81,6 +81,18 @@ export default function SidebarMember() {
                         width="w-62" />
                 </span>
             </div>
-        </div>
+        </>
+    )
+}
+
+export default function SidebarMember() {
+
+    return (
+        <>
+            <div className="bg-white h-full w-85 p-4 border-r border-gray-300 relative md:block hidden ">
+                <Sidebar />
+            </div>
+            <SidebarMobile />
+        </>
     )
 }
