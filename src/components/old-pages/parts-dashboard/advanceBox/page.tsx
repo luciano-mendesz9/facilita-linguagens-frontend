@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {Rocket, Play} from "lucide-react";
 import Pesquisa from "@/src/components/old-pages/parts-dashboard/pesquisa/index";
 import TitlePageMember from "@/src/components/members/title-page";
@@ -62,7 +62,7 @@ export default function StartReadBox({ indexRanking }: { indexRanking: number })
             </div>
 
             <div className="flex justify-center md:hidden mt-6">
-                <button className="w-full max-w-xs bg-white text-blue-600 font-semibold py-3 px-8 rounded-2xl flex justify-center items-center hover:bg-gray-50 transition-colors">
+                <button className="w-full max-w-xs border md:border-none bg-white text-blue-600 font-semibold py-3 px-8 rounded-2xl flex justify-center items-center hover:bg-gray-50 transition-colors">
                     <Play size={18}/>
                     <a href="/dashboard/select-reading" target="_self" className="ml-3 text-sm">Iniciar Leitura</a>
                 </button>

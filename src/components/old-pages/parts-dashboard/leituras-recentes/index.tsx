@@ -31,7 +31,7 @@ export default function LeiturasRecentes({
 
   return (
 
-    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 p-3 rounded-lg transition-colors">
+    <a href="#" className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 p-3 rounded-lg transition-colors  md:overflow-auto overflow-x-auto hide-scrollbar cursor-pointer hover:bg-blue-50 ">
       <div className="flex-1 min-w-0">
         <div className="flex items-start">
 
@@ -71,6 +71,6 @@ export default function LeiturasRecentes({
           <ChevronRight size={22} />
         </a>
       </div>
-    </div>
+    </a>
   );
 }
