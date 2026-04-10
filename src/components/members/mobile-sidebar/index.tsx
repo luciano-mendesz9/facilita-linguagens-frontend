@@ -6,6 +6,7 @@ import { HomeIcon, ListIcon, PlayIcon } from "lucide-react";
 import Image from "next/image";
 import ProfileDefault from '@assets/profile.png'
 import { Sidebar } from "../sidebar";
+import NotificationButton from "../notification-button";
 
 
 export default function SidebarMobile() {
@@ -21,6 +22,10 @@ export default function SidebarMobile() {
                 >
                     <ListIcon />
                     <span className="text-blue-500 font-semibold">{PLATFORM_NAME}</span>
+                </div>
+                <div className="relative ml-3 md:ml-2">
+
+                    <NotificationButton />
                 </div>
             </div>
 
@@ -45,9 +50,9 @@ export default function SidebarMobile() {
 
             {/* Bottom nav */}
             <div className="bg-white w-full py-3 px-2 flex justify-around items-center fixed bottom-0 left-0 z-10 border-t border-gray-200 md:hidden">
-                <a href="#" className="flex flex-col items-center flex-1">
-                    <HomeIcon />
-                    <span className="text-[12px]">Início</span>
+                <a href="/dashboard" className="flex flex-col items-center flex-1">
+                    <HomeIcon color="gray" />
+                    <span className="text-[12px] text-gray-500">Início</span>
                 </a>
 
                 <a href="#" className="flex flex-col items-center flex-1">
@@ -67,7 +72,7 @@ export default function SidebarMobile() {
                         height={30}
                         className="rounded-full"
                     />
-                    <span className="text-[12px]">Você</span>
+                    <span className="text-[12px] text-gray-500">Você</span>
                 </a>
             </div>
         </>

@@ -49,7 +49,7 @@ export default function LeiturasRecentesBox
                              Leituras Recentes
                         </span>
                         <span className="text-blue-500 font-medium">
-                            <a href=""
+                            <a href="/dashboard/reading-history"
                                 target="_self"
                                 className="hover:underline">
                                 Ver todas

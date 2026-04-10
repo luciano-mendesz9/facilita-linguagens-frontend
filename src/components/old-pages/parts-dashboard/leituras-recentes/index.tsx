@@ -6,6 +6,8 @@ interface RecentsReadingProps {
   tituloDoTexto?: string;
   autorDoTexto?: string;
   generoDoTexto?: string;
+  date?: string;
+  showDate?: boolean;
 
   iconColor?: string;
   bgIconColor?: string;
@@ -22,6 +24,8 @@ export default function LeiturasRecentes({
   generoDoTexto = "conto",
   iconColor = "text-blue-600",
   bgIconColor = "bg-blue-100",
+  date = '',
+  showDate,
   borderIconColor = "border-blue-300",
   iconSize = 30 // Tamanho do ícone ajustável
 }: RecentsReadingProps) {
@@ -31,7 +35,7 @@ export default function LeiturasRecentes({
 
   return (
 
-    <a href="#" className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 p-3 rounded-lg transition-colors  md:overflow-auto overflow-x-auto hide-scrollbar cursor-pointer hover:bg-blue-50 ">
+    <a href="#" target="_blank" className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 p-3 rounded-lg transition-colors  md:overflow-auto overflow-x-auto hide-scrollbar cursor-pointer hover:bg-blue-50 ">
       <div className="flex-1 min-w-0">
         <div className="flex items-start">
 
@@ -57,6 +61,7 @@ export default function LeiturasRecentes({
               <strong>Gênero:</strong> {generoDoTexto}
             </span>
           </div>
+         {showDate && <span className="flex-1 flex justify-center text-[14px] text-gray-500">{date}</span>}
         </div>
       </div>
 
@@ -65,11 +70,10 @@ export default function LeiturasRecentes({
           title="Acertou a questão"
           type="success"
         />
-        <a href=""
-          target="_self"
+        <div
           className="text-gray-500 hover:text-gray-700 text-xl p-1">
           <ChevronRight size={22} />
-        </a>
+        </div>
       </div>
     </a>
   );
