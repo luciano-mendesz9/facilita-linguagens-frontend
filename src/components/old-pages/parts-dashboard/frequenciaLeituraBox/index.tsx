@@ -32,21 +32,45 @@ export default function FrequenciaDeLeiturasBox() {
     };
 
     return (
-        <div className="w-full ">
+        <div className="w-full">
+            {/* Cabeçalho - Desktop e Mobile */}
             <div className="flex items-center justify-between mb-2">
                 <span className="text-base">
-                    <h1 className="text-[18px] font-semibold">Frequência de Leituras</h1>
+                    <h1 className="text-[18px] font-semibold">Frequência de leituras</h1>
                 </span>
                 <span className="text-blue-500 font-bold">{stats.done}/30 dias</span>
             </div>
+            
+            {/* VERSÃO MOBILE - Scroll horizontal invisível */}
+            <div className="overflow-x-auto sm:hidden scrollbar-hide">
+                <div className="flex w-max gap-0.5 min-w-full">
+                    {days.map((day, index) => (
+                        <div
+                            key={index}
+                            className={`w-8 h-9 flex items-center justify-center ${statusToColor[day.box]} ${
+                                index === 0 ? 'rounded-l-full' : index === days.length - 1 ? 'rounded-r-full' : ''
+                            }`}
+                            title={`Dia ${index + 1}`}
+                        >
+                            {day.box === "DONE" && (
+                                <BookOpen className="text-white" size={14} />
+                            )}
+                            {day.box === "LOST" && (
+                                <Book className="text-white" size={14} />
+                            )}
+                        </div>
+                    ))}
+                </div>
+            </div>
 
-            <div className="flex w-full gap-0.5">
+            {/* VERSÃO DESKTOP - Sem scroll, elementos flexíveis */}
+            <div className="hidden sm:flex w-full gap-0.5">
                 {days.map((day, index) => (
                     <div
                         key={index}
-                        className={`flex-1 h-9 flex items-center justify-center ${statusToColor[day.box]} ${index === 0 ? 'rounded-l-full' :
-                                index === days.length - 1 ? 'rounded-r-full' : ''
-                            }`}
+                        className={`flex-1 h-9 flex items-center justify-center ${statusToColor[day.box]} ${
+                            index === 0 ? 'rounded-l-full' : index === days.length - 1 ? 'rounded-r-full' : ''
+                        }`}
                         title={`Dia ${index + 1}`}
                     >
                         {day.box === "DONE" && (

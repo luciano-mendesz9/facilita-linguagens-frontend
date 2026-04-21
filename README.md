@@ -1,7 +1,4 @@
 # Facilita
-
-Bem-vindo ao repositório do **Hidro Florestas**, uma aplicação fullstack desenvolvida com **Next.js** e **Prisma**. Este guia ajudará você a configurar o ambiente de desenvolvimento local do zero.
-
 ---
 
 ## 🚀 Primeiros Passos

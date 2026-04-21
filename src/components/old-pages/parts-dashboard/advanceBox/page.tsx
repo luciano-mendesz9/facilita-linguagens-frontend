@@ -20,7 +20,8 @@ export default function StartReadBox({ indexRanking }: { indexRanking: number })
 
     return (
         <section className="px-4 md:px-0">
-            <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
+            
+            <div className="hidden md:flex flex-col md:flex-row md:items-center justify-between mb-6">
                 <span className="md:text-4xl mb-4 md:mb-6 tracking-tight text-center flex justify-center items-center md:text-left"> 
                     <TitlePageMember
                         text="Painel de Controle"
@@ -34,7 +35,6 @@ export default function StartReadBox({ indexRanking }: { indexRanking: number })
                     
                     <div className="w-full md:w-full flex flex-col items-center md:items-start">
 
-                        {/*Não tem diretório ainda*/}
                         <div className="w-full flex justify-center md:justify-start mb-4">
                             <span className="bg-blue-300/60 rounded-3xl text-white text-sm flex font-semibold justify-center p-2 w-44">
                                 <Rocket size={18} className="md:size-4.5"/>
@@ -61,7 +61,7 @@ export default function StartReadBox({ indexRanking }: { indexRanking: number })
                 </div>
             </div>
 
-            <div className="flex justify-center md:hidden mt-6">
+            <div className="flex md:hidden mt-6">
                 <button className="w-full max-w-xs border md:border-none bg-white text-blue-600 font-semibold py-3 px-8 rounded-2xl flex justify-center items-center hover:bg-gray-50 transition-colors">
                     <Play size={18}/>
                     <a href="/dashboard/select-reading" target="_self" className="ml-3 text-sm">Iniciar Leitura</a>
