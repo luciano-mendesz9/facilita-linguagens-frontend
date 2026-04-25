@@ -130,7 +130,7 @@ export default function ProfilePage() {
                             style={{ width: '80%' }}
                         >
                             <span className="text-black text-sm font-medium">Progresso de nível</span>
-                            <span className="text-black text-sm font-medium">5679 XP / 6000 XP</span>
+                            <span className="text-black text-sm font-medium">5679 XP / 6000 </span>
                         </div>
                     </div>
                 </div>
